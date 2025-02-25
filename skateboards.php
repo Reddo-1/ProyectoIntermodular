@@ -79,10 +79,7 @@ if (isset($_SESSION["id"])) {
 
     <h2 class="tipoProducto">TABLAS DE SKATE</h2>
     <?php
-    $sql = "SELECT p.imagen as imagenProd , p.nombre as nombreProd , 
-    p.descripcion as descripcionProd , p.precio as precioProd , p.stock_disponible as stockProd , 
-    m.nombre as nombreMarca, t.tamanyo as tamañoTabla,t.color_hex as colorTabla , p.id_producto as idProd
-        FROM productos p , marcas m , tablas t where (p.id_marca_producto = m.id_marca and p.id_producto = t.id_tabla);";
+    $sql = "SELECT * from mostrar_tablas";
     $resultSet = $conn->query($sql);
     ?>
     <section class="productoMostrar">
