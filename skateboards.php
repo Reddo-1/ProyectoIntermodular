@@ -73,6 +73,7 @@ if (isset($_SESSION["id"])) {
               </svg>
             <input type="text" class="search-input" id="search"  placeholder="Buscar...">
         </div>
+        <div id="search-results" class="resultados-busqueda"></div>
 
     </header>
 
