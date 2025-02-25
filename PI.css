@@ -272,3 +272,67 @@ button:hover {
     background-color: #fbeaea;
     border: 1px solid #dc3545;
 }
+
+#search-results {
+    top: 100%; 
+    left: 0;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    z-index: 1000; 
+    max-height: 300px; 
+    overflow-y: auto; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.resultado-item {
+    display: flex; 
+    align-items: center; 
+    text-decoration: none; 
+    color: inherit; 
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+.resultado-item:hover {
+    background-color: #f9f9f9; 
+    text-decoration: none; 
+}
+
+.imagen-producto {
+    width: 70px;
+    height: 70px;
+    margin-right: 15px; 
+    object-fit: cover; 
+}
+
+.info-producto {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nombre-producto {
+    font-size: 18px;
+    color: #333;
+    margin: 0; 
+    flex: 1; 
+    margin-right: 15px;
+}
+
+.precio-producto {
+    font-size: 18px;
+    color: #666;
+    margin: 0; 
+    font-weight: bold; 
+}
+
+.mensaje.error {
+    padding: 10px;
+    color: #dc3545;
+    background-color: #fbeaea;
+    text-align: center;
+}
