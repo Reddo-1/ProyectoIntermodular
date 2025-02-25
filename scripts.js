@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (data.length > 0) {
                         data.forEach(producto => {
                             let item = document.createElement("a"); // Usamos <a> como contenedor principal
-                            item.href = `producto.php?id=${producto.id_producto}`; // Enlace en el contenedor
+                            item.href = `producto.php?id=${producto.id_producto}&tipo=${producto.tipo_producto}`; // Enlace en el contenedor
                             item.classList.add("resultado-item"); // Clase para estilos
                             item.innerHTML = `
                                     <img src="${producto.imagen}" alt="${producto.nombre}" class="imagen-producto">

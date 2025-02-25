@@ -89,7 +89,7 @@ if (isset($_SESSION["id"])) {
         ?>
         
         <div class="mainDiv">
-        <a href="producto.php?id={<?php echo $row['idProd']?>}">
+        <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
             <h3><?php echo $row['nombreProd'];?></h3>
             <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
             <div class="imagenTabla">
