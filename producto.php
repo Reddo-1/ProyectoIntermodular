@@ -1,7 +1,7 @@
 <?php
 include "conexion.php";
 session_start();
-$destinoLogin = "login.php"; // Por defecto, redirige a login
+$destinoLogin = "login.php";
 
 $isLoggedIn = isset($_SESSION["id"]) ? 'true' : 'false';
 
@@ -12,8 +12,8 @@ if (isset($_SESSION["id"])) {
         $destinoLogin = "index.php";
     }
 }
-?>
 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,6 +70,7 @@ if (isset($_SESSION["id"])) {
 
         <nav class="barraNavegacion">
 
+            <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
             <a href="zapatillas">ZAPATILLAS</a>
             <a href="ropa">ROPA</a>
@@ -85,37 +86,7 @@ if (isset($_SESSION["id"])) {
         <div id="search-results" class="resultados-busqueda"></div>
 
     </header>
-    <section class="video">
 
-        <iframe width="100%" height="700" 
-        src="https://www.youtube.com/embed/videoseries?list=PLBHGV5FeYECy7dAee8qMaz8_w8Owjfkc5&autoplay=1&mute=1&loop=1" 
-        frameborder="0" 
-        allow="autoplay; encrypted-media" 
-        allowfullscreen>
-        </iframe>
-
-    </section>
-    
-    <section class="acercaDe">
-        <h2>Acerca De XanaX skateboards</h2>
-        <p>
-            Somos una pequeña empresa creada por y para skaters , con esto queremos decir que además de daros a conocer
-            nuestros diseños originales para tablas y demás queremos daros otras alternativas para que la marca no sea como
-            cualquier otra generica que conozcas.
-        </p>
-        <p>
-            Nuestro objetivo es dar a conocer a todos aquellos skaters que aun teniendo el talento y la habilidad para ser 
-            patrocinados estan olvidados pero , os preguntareis como conseguiremos eso verdad? Pues muy sencillo crearemos eventos
-            con entrada totalmente gratuita con opción a participar en competiciones o retos donde no solo obtendrás visibilidad a 
-            traves de nuestras redes pero te nutrirás alrededor de cientos de skaters que compartan los mismos entretenimientos y 
-            ambiciones que tu! 
-        </p>
-        <h2>A que esperas!</h2>
-    </section>
-
-    
-    
-      
 </body>
 </html>
 <?php

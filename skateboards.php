@@ -73,23 +73,23 @@ if (isset($_SESSION["id"])) {
               </svg>
             <input type="text" class="search-input" id="search"  placeholder="Buscar...">
         </div>
+        <div id="search-results" class="resultados-busqueda"></div>
 
     </header>
 
     <h2 class="tipoProducto">TABLAS DE SKATE</h2>
     <?php
-    $sql = "SELECT p.imagen as imagenProd , p.nombre as nombreProd , 
-    p.descripcion as descripcionProd , p.precio as precioProd , p.stock_disponible as stockProd , 
-    m.nombre as nombreMarca, t.tamanyo as tamañoTabla,t.color_hex as colorTabla
-        FROM productos p , marcas m , tablas t where (p.id_marca_producto = m.id_marca and p.id_producto = t.id_tabla);";
+    $sql = "SELECT * from mostrar_tablas";
     $resultSet = $conn->query($sql);
     ?>
-    <section class="tablas">
+    <section class="productoMostrar">
         <?php
         if($resultSet->num_rows > 0){
             while ($row = $resultSet->fetch_assoc()){
         ?>
+        
         <div class="mainDiv">
+        <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
             <h3><?php echo $row['nombreProd'];?></h3>
             <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
             <div class="imagenTabla">
@@ -99,11 +99,13 @@ if (isset($_SESSION["id"])) {
                 
                 <p class="descripcion"><?php echo $row['descripcionProd'];?></p>
                 <p class="stock">Stock: <?php echo $row['stockProd'];?>   Tamaño: <?php echo $row['tamañoTabla'];?></p>
+        </a>
                 <div class="precio-boton">
                     <h3><?php echo $row['precioProd'];?>€</h3>
                     <button>Agregar al carrito</button>
                 </div>
             </div>
+        
         </div><?php }} else{
             echo "Tablas no encontradas";
         }
