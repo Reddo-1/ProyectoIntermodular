@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             item.innerHTML = `
                                     <img src="${producto.imagen}" alt="${producto.nombre}" class="imagen-producto">
                                     <div class="info-producto">
-                                    <h2 class="nombre-producto">${producto.nombre}</h2>
+                                    <h2 class="nombre-producto"> ${producto.nombre} <br>Marca: ${producto.nombreMarca}</h2>
                                     <p class="precio-producto">$${producto.precio}</p>
                                     </div>
                             `;

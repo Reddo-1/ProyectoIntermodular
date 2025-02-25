@@ -4,7 +4,11 @@ include "conexion.php";
 if (isset($_GET['query'])) {
     $search = $conn->real_escape_string($_GET['query']);
 
-    $sql = "SELECT id_producto, nombre, precio, imagen FROM productos WHERE nombre LIKE '%$search%' LIMIT 10";
+    $sql = "SELECT p.id_producto, p.nombre, p.precio, p.imagen , m.nombre as nombreMarca FROM productos p 
+    Inner join marcas m on p.id_marca_producto = m.id_marca
+    WHERE p.nombre LIKE '%$search%' or m.nombre LIKE '%$search%' 
+    LIMIT 10
+    ";
     $result = $conn->query($sql);
 
     $productos = [];
