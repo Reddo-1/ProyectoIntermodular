@@ -33,9 +33,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $contrasenya = $conn->real_escape_string($_POST["contrasenya"]);
 
                 // Insertar usuario en la base de datos
-                $stmt = $conn->prepare("INSERT INTO clientes (es_admin, puntos, email, n_telefono, nombre, apellidos, direccion, contrasenya,tipo_producto) 
-                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("iisisssss", $admin, $puntos, $email, $numTelefono, $nombre, $apellidos, $direccion, $contrasenya, $tipoProd);
+                $stmt = $conn->prepare("INSERT INTO clientes (es_admin, puntos, email, n_telefono, nombre, apellidos, direccion, contrasenya) 
+                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("iisissss", $admin, $puntos, $email, $numTelefono, $nombre, $apellidos, $direccion, $contrasenya);
                 $stmt->execute();
 
                 $mensaje = "¡Usuario registrado correctamente!";
@@ -87,9 +87,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 throw new Exception("La imagen es obligatoria o hubo un error al subirla.");
                 }
 
-                $stmt = $conn->prepare("INSERT INTO productos (es_novedad, es_oferta, descripcion, nombre, precio, stock_disponible, id_marca_producto,id_proveedor, imagen) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("iissdiiis", $novedad, $oferta, $descripcion, $nombre, $precio, $stock, $idMarca,$idProveedor, $imagen);
+                $stmt = $conn->prepare("INSERT INTO productos (es_novedad, es_oferta, descripcion, nombre, precio, stock_disponible, id_marca_producto,id_proveedor, imagen,tipo_producto) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("iissdiiis", $novedad, $oferta, $descripcion, $nombre, $precio, $stock, $idMarca,$idProveedor, $imagen,$tipoProd);
                 $stmt->execute();
 
                 $producto_id = $conn->insert_id;
