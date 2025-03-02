@@ -1,7 +1,7 @@
 <?php
 include "conexion.php";
 session_start();
-$destinoLogin = "login.php";
+$destinoLogin = "login.php"; // Por defecto, redirige a login
 
 $isLoggedIn = isset($_SESSION["id"]) ? 'true' : 'false';
 
@@ -12,20 +12,8 @@ if (isset($_SESSION["id"])) {
         $destinoLogin = "index.php";
     }
 }
-$idProd = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$tipoProd = isset($_GET['tipo']) ? $_GET['tipo'] : '';
-
-if ($tipoProd == 'tablas') {
-    $sql = "SELECT * FROM mostrar_tablas WHERE idProd = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $idProd);
-    $stmt->execute();
-    $resultSet = $stmt->get_result();
-    $producto = $resultSet->fetch_assoc();
-}
-    
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,12 +21,11 @@ if ($tipoProd == 'tablas') {
         var isLoggedIn = <?php echo $isLoggedIn; ?>;
     </script>
     <script src="scripts.js"></script>
-    <input type="hidden" value="<?php echo $tipoProd; ?>" id="tipoProd">
-
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="PI.css">
-    <title>Producto</title>
+    <title>Document</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
@@ -57,7 +44,7 @@ if ($tipoProd == 'tablas') {
                   </svg>
                </a>
 
-                <a href="Carrito">
+                <a href="#" id="carrito-icon">
                     <svg fill="currentColor" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                     width="16" height="16" viewBox="0 0 184.979 184.979" xml:space="preserve">
                     <g> <path d="M179.2,48.051c-48-2.877-95.319,10.319-143.511,8.179c-0.368-0.016-0.701,0.019-1.015,0.08 c-2.479-10.772-5.096-21.509-8.742-31.943c-0.543-1.555-1.806-2.661-3.513-2.674c-6.645-0.052-13.258-0.784-19.904-0.566 c-2.749,0.09-3.629,4.607-0.678,5.008c4.065,0.553,8.08,1.426,12.143,1.963c6.887,0.909,6.443,2.759,8.263,9.15 c3.169,11.124,5.472,22.507,8.046,33.777c3.334,14.601,6.38,36.451,16.571,49.158c-0.686,1.313-0.292,3.332,1.434,3.768 c34.473,8.712,70.204,0.127,105.163-0.31c1.66-0.021,2.737-0.924,3.262-2.09c0.303-0.267,0.562-0.59,0.684-1.039 c6.583-24.089,21.122-45.512,27.457-69.411C185.764,47.688,181.318,45.578,179.2,48.051z M42.63,64.435 c-0.473,0.402-0.782,0.89-0.972,1.432c-0.385,0.317-0.7,0.697-0.915,1.146c-0.033,0.017-0.062,0.04-0.094,0.058 c-0.074-0.138-0.147-0.274-0.221-0.412c-0.914-1.715-2.423-2.086-3.758-1.659c-0.066-0.286-0.138-0.571-0.203-0.857 C38.521,64.275,40.576,64.355,42.63,64.435z M53.899,117.406c1.874,1.179,3.995,1.997,6.284,2.453 c-1.804-0.088-3.609-0.188-5.415-0.321C54.477,118.817,54.191,118.123,53.899,117.406z M126.397,117.312 c0.229-0.294,0.38-0.636,0.513-0.984c0.469,0.256,1.005,0.436,1.667,0.435h7.29C132.709,116.934,129.551,117.102,126.397,117.312z"/>
@@ -82,7 +69,6 @@ if ($tipoProd == 'tablas') {
         </div>
 
         <nav class="barraNavegacion">
-
             <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
             <a href="zapatillas">ZAPATILLAS</a>
@@ -99,32 +85,116 @@ if ($tipoProd == 'tablas') {
         <div id="search-results" class="resultados-busqueda"></div>
 
     </header>
+    <div id="productos-carrito">
+    <h2>Tu Carrito</h2>
+    <div id="carrito-items"></div>
+    <button id="vaciar-carrito">Vaciar Carrito</button>
+    <button id="comprar">Comprar</button>
+    </div>
 
-    <main class="producto-detalle">
-        <div class="imagen-container">
-            <img src="<?php echo $producto['imagenProd']; ?>" alt="<?php echo $producto['nombreProd']; ?>">
-        </div>
-        <div class="info-container">
-            <h1><?php echo $producto['nombreProd']; ?></h1>
-            <h2>Marca --> <?php echo $producto['nombreMarca']; ?></h2>
-            <p class="precio">Precio : <?php echo $producto['precioProd']; ?>€</p>
-            <hr>
-            <p class="descripcion"><?php echo $producto['descripcionProd']; ?></p>
-            <hr>
+ 
+    
 
-            <div class="oculto" id="tabla">
-                <h2>
-                    <font color="<?php echo $producto['colorTabla']?>"> Color de tabla --> <?php echo $producto['colorTabla']?></font>
-                </h2>
-                <h2>Tamaño --> <?php echo $producto['tamañoTabla']; ?></h2>
-            </div>
 
-            <div>
-                <h3>Stock Disponible = <?php echo $producto['stockProd']; ?></h3>
-                <button class="btn-carrito">Añadir al carrito</button>
-            </div> 
-        </div>
-    </main>
+
+
+
+
+
+
+
+
+
+<script>
+    const carritoItems = document.getElementById("carrito-items");
+    const vaciarCarritoBtn = document.getElementById("vaciar-carrito");
+    const comprarBtn = document.getElementById("comprar");
+
+    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    function actualizarCarrito() {
+        carritoItems.innerHTML = ""; 
+        if (carrito.length === 0) {
+            carritoItems.innerHTML = "<p>El carrito está vacío.</p>";
+        } else {
+            carrito.forEach((item, index) => {
+                const itemDiv = document.createElement("div");
+                itemDiv.className = "item-carrito2";
+                itemDiv.innerHTML = `
+                    <img src="${item.imagen}" alt="${item.nombre}" class="imagen-carrito">
+                        <div class="info-carrito">
+                            <h2>${item.nombre}</h2>
+                        </div>
+                        <h2>${item.precio}€</h2>
+                        <div class="cantidad-carrito">
+                            <button class="incrementar-cantidad" data-id="${item.id}">+</button>
+                            <span>Cantidad: ${item.cantidad}</span>
+                            <button class="decrementar-cantidad" data-id="${item.id}">-</button>
+                        </div>
+                        <button class="eliminar-item" data-id="${item.id}">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill ="currentColor" viewBox="0 0 24 24">
+                        <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 5 5 L 5 20 C 5 20.522222 5.1913289 21.05461 5.5683594 21.431641 
+                        C 5.9453899 21.808671 6.4777778 22 7 22 L 17 22 C 17.522222 22 18.05461 21.808671 18.431641 21.431641 
+                        C 18.808671 21.05461 19 20.522222 19 20 L 19 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 7 5 L 17 5 L 17 20 L 7 
+                        20 L 7 5 z M 9 7 L 9 18 L 11 18 L 11 7 L 9 7 z M 13 7 L 13 18 L 15 18 L 15 7 L 13 7 z"></path>
+
+                        </svg></button>
+                `;
+                carritoItems.appendChild(itemDiv);
+            });
+        }
+        localStorage.setItem("carrito", JSON.stringify(carrito)); 
+    }
+
+    
+    vaciarCarritoBtn.addEventListener("click", () => {
+        carrito = [];
+        actualizarCarrito();
+    });
+
+    carritoItems.addEventListener("click", (e) => {
+    // Verifica si el clic fue en el botón de eliminar o en el SVG dentro de él
+    const botonEliminar = e.target.closest(".eliminar-item");
+    if (botonEliminar) {
+        const id = botonEliminar.getAttribute("data-id");
+        carrito = carrito.filter(item => item.id !== id);
+        actualizarCarrito();
+    } else if (e.target.classList.contains("incrementar-cantidad")) {
+        const id = e.target.getAttribute("data-id");
+        carrito = carrito.map(item => {
+            if (item.id === id) {
+                item.cantidad += 1; 
+            }
+            return item;
+        });
+        actualizarCarrito();
+    } else if (e.target.classList.contains("decrementar-cantidad")) {
+        const id = e.target.getAttribute("data-id");
+        carrito = carrito.map(item => {
+            if (item.id === id && item.cantidad > 1) {
+                item.cantidad -= 1;  
+            }
+            return item;
+        }).filter(item => item.cantidad > 0);  
+        actualizarCarrito();
+    }
+});
+
+    // Comprar productos (puedes ajustar esta parte según cómo manejes los pagos)
+    comprarBtn.addEventListener("click", () => {
+        if (carrito.length > 0) {
+            alert("¡Compra realizada con éxito!");
+            carrito = [];
+            actualizarCarrito();
+        } else {
+            alert("El carrito está vacío.");
+        }
+    });
+
+    // Cargar carrito al iniciar
+    actualizarCarrito();
+</script>
 </body>
 </html>
 <?php
