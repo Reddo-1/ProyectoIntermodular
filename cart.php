@@ -69,7 +69,7 @@ if (isset($_SESSION["id"])) {
         </div>
 
         <nav class="barraNavegacion">
-
+            <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
             <a href="zapatillas.php">ZAPATILLAS</a>
             <a href="ropa">ROPA</a>
@@ -85,44 +85,116 @@ if (isset($_SESSION["id"])) {
         <div id="search-results" class="resultados-busqueda"></div>
 
     </header>
-    <div id="carrito-flotante" class="carrito-flotante oculto">
-        <h2>Carrito de Compras</h2>
-        <div id="carrito-items"></div>
-        <button id="cerrar-carrito">Cerrar</button>
-        <button id="comprar" onclick="location.href='cart.php'">Ir a Caja</button>
-        <button id="vaciar-carrito">Vaciar Carrito</button>
+    <div id="productos-carrito">
+    <h2>Tu Carrito</h2>
+    <div id="carrito-items"></div>
+    <button id="vaciar-carrito">Vaciar Carrito</button>
+    <button id="comprar">Comprar</button>
     </div>
-    <section class="video">
 
-        <iframe width="100%" height="700" 
-        src="https://www.youtube.com/embed/videoseries?list=PLBHGV5FeYECy7dAee8qMaz8_w8Owjfkc5&autoplay=1&mute=1&loop=1" 
-        frameborder="0" 
-        allow="autoplay; encrypted-media" 
-        allowfullscreen>
-        </iframe>
+ 
+    
 
-    </section>
-    
-    <section class="acercaDe">
-        <h2>Acerca De XanaX skateboards</h2>
-        <p>
-            Somos una pequeña empresa creada por y para skaters , con esto queremos decir que además de daros a conocer
-            nuestros diseños originales para tablas y demás queremos daros otras alternativas para que la marca no sea como
-            cualquier otra generica que conozcas.
-        </p>
-        <p>
-            Nuestro objetivo es dar a conocer a todos aquellos skaters que aun teniendo el talento y la habilidad para ser 
-            patrocinados estan olvidados pero , os preguntareis como conseguiremos eso verdad? Pues muy sencillo crearemos eventos
-            con entrada totalmente gratuita con opción a participar en competiciones o retos donde no solo obtendrás visibilidad a 
-            traves de nuestras redes pero te nutrirás alrededor de cientos de skaters que compartan los mismos entretenimientos y 
-            ambiciones que tu! 
-        </p>
-        <h2>A que esperas!</h2>
-    </section>
+
+
+
+
+
+
+
+
+
+
+<script>
+    const carritoItems = document.getElementById("carrito-items");
+    const vaciarCarritoBtn = document.getElementById("vaciar-carrito");
+    const comprarBtn = document.getElementById("comprar");
+
+    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    function actualizarCarrito() {
+        carritoItems.innerHTML = ""; 
+        if (carrito.length === 0) {
+            carritoItems.innerHTML = "<p>El carrito está vacío.</p>";
+        } else {
+            carrito.forEach((item, index) => {
+                const itemDiv = document.createElement("div");
+                itemDiv.className = "item-carrito2";
+                itemDiv.innerHTML = `
+                    <img src="${item.imagen}" alt="${item.nombre}" class="imagen-carrito">
+                        <div class="info-carrito">
+                            <h2>${item.nombre}</h2>
+                        </div>
+                        <h2>${item.precio}€</h2>
+                        <div class="cantidad-carrito">
+                            <button class="incrementar-cantidad" data-id="${item.id}">+</button>
+                            <span>Cantidad: ${item.cantidad}</span>
+                            <button class="decrementar-cantidad" data-id="${item.id}">-</button>
+                        </div>
+                        <button class="eliminar-item" data-id="${item.id}">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill ="currentColor" viewBox="0 0 24 24">
+                        <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 5 5 L 5 20 C 5 20.522222 5.1913289 21.05461 5.5683594 21.431641 
+                        C 5.9453899 21.808671 6.4777778 22 7 22 L 17 22 C 17.522222 22 18.05461 21.808671 18.431641 21.431641 
+                        C 18.808671 21.05461 19 20.522222 19 20 L 19 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 7 5 L 17 5 L 17 20 L 7 
+                        20 L 7 5 z M 9 7 L 9 18 L 11 18 L 11 7 L 9 7 z M 13 7 L 13 18 L 15 18 L 15 7 L 13 7 z"></path>
+
+                        </svg></button>
+                `;
+                carritoItems.appendChild(itemDiv);
+            });
+        }
+        localStorage.setItem("carrito", JSON.stringify(carrito)); 
+    }
 
     
-    
-      
+    vaciarCarritoBtn.addEventListener("click", () => {
+        carrito = [];
+        actualizarCarrito();
+    });
+
+    carritoItems.addEventListener("click", (e) => {
+    // Verifica si el clic fue en el botón de eliminar o en el SVG dentro de él
+    const botonEliminar = e.target.closest(".eliminar-item");
+    if (botonEliminar) {
+        const id = botonEliminar.getAttribute("data-id");
+        carrito = carrito.filter(item => item.id !== id);
+        actualizarCarrito();
+    } else if (e.target.classList.contains("incrementar-cantidad")) {
+        const id = e.target.getAttribute("data-id");
+        carrito = carrito.map(item => {
+            if (item.id === id) {
+                item.cantidad += 1; 
+            }
+            return item;
+        });
+        actualizarCarrito();
+    } else if (e.target.classList.contains("decrementar-cantidad")) {
+        const id = e.target.getAttribute("data-id");
+        carrito = carrito.map(item => {
+            if (item.id === id && item.cantidad > 1) {
+                item.cantidad -= 1;  
+            }
+            return item;
+        }).filter(item => item.cantidad > 0);  
+        actualizarCarrito();
+    }
+});
+
+    // Comprar productos (puedes ajustar esta parte según cómo manejes los pagos)
+    comprarBtn.addEventListener("click", () => {
+        if (carrito.length > 0) {
+            alert("¡Compra realizada con éxito!");
+            carrito = [];
+            actualizarCarrito();
+        } else {
+            alert("El carrito está vacío.");
+        }
+    });
+
+    // Cargar carrito al iniciar
+    actualizarCarrito();
+</script>
 </body>
 </html>
 <?php

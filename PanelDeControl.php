@@ -30,14 +30,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $numTelefono = isset($_POST["n_telefono"]) ? intval($_POST["n_telefono"]) : 0;
                 $admin = isset($_POST["es_admin"]) ? 1 : 0;
                 $direccion = $conn->real_escape_string($_POST["direccion"]);
+                $metodoPago = isset($_POST["tipoPago"]) ? intval($_POST["tipoPago"]) : 0;
                 $contrasenya = $conn->real_escape_string($_POST["contrasenya"]);
 
                 // Insertar usuario en la base de datos
-                $stmt = $conn->prepare("INSERT INTO clientes (es_admin, puntos, email, n_telefono, nombre, apellidos, direccion, contrasenya,tipo_producto) 
-                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("iisisssss", $admin, $puntos, $email, $numTelefono, $nombre, $apellidos, $direccion, $contrasenya, $tipoProd);
+                $stmt = $conn->prepare("INSERT INTO clientes (es_admin, puntos, email, n_telefono, nombre, apellidos, direccion, contrasenya) 
+                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("iisissss", $admin, $puntos, $email, $numTelefono, $nombre, $apellidos, $direccion, $contrasenya);
                 $stmt->execute();
 
+                $idCliente = $conn->insert_id;
+
+                $stmt = $conn->prepare("INSERT INTO pago_clientes (id_persona,id_metodo) 
+                                        VALUES (?, ?)");
+                $stmt->bind_param("ii",$idCliente,$metodoPago);
+                $stmt->execute();
                 $mensaje = "¡Usuario registrado correctamente!";
 
             } elseif ($tipo === "marca") {
@@ -87,9 +94,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 throw new Exception("La imagen es obligatoria o hubo un error al subirla.");
                 }
 
-                $stmt = $conn->prepare("INSERT INTO productos (es_novedad, es_oferta, descripcion, nombre, precio, stock_disponible, id_marca_producto,id_proveedor, imagen) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("iissdiiis", $novedad, $oferta, $descripcion, $nombre, $precio, $stock, $idMarca,$idProveedor, $imagen);
+                $stmt = $conn->prepare("INSERT INTO productos (es_novedad, es_oferta, descripcion, nombre, precio, stock_disponible, id_marca_producto,id_proveedor, imagen,tipo_producto) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("iissdiiiss", $novedad, $oferta, $descripcion, $nombre, $precio, $stock, $idMarca,$idProveedor, $imagen,$tipoProd);
                 $stmt->execute();
 
                 $producto_id = $conn->insert_id;
@@ -102,6 +109,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt_tablas->bind_param("ids", $producto_id, $size, $color);
                     $stmt_tablas->execute();
                 }
+                else if ($tipoProd == "ejes") {
+                    $size = isset($_POST["sizeEje"]) ? floatval($_POST["sizeEje"]) : 0.0;
+                    
+            
+                    $stmt_tablas = $conn->prepare("INSERT INTO ejes (id_eje, tamanyo) VALUES (?, ?)");
+                    $stmt_tablas->bind_param("id", $producto_id, $size);
+                    $stmt_tablas->execute();
+                }
+                else if ($tipoProd == "zapatillas") {
+                    $talla = isset($_POST["talla"]) ? intval($_POST["talla"]) : 0.0;
+                    $tipo = $conn->real_escape_string($_POST["tipo"]);
+            
+                    $stmt_tablas = $conn->prepare("INSERT INTO zapatillas (id_zapatilla, tipo, talla) VALUES (?, ?, ?)");
+                    $stmt_tablas->bind_param("isi", $producto_id, $tipo, $talla);
+                    $stmt_tablas->execute();
+                }
 
                 $mensaje = "¡Producto registrado exitosamente!";
 
@@ -109,6 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         $conn->commit();
+        header("Location: panelDeControl.php?mensaje=" . urlencode($mensaje));
         exit();
     } catch (Exception $e) {
         $conn->rollback();
@@ -144,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   </svg>
                </a>
 
-                <a href="Carrito">
+                <a href="#" id="carrito-icon">
                     <svg fill="currentColor" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                     width="16" height="16" viewBox="0 0 184.979 184.979" xml:space="preserve">
                     <g> <path d="M179.2,48.051c-48-2.877-95.319,10.319-143.511,8.179c-0.368-0.016-0.701,0.019-1.015,0.08 c-2.479-10.772-5.096-21.509-8.742-31.943c-0.543-1.555-1.806-2.661-3.513-2.674c-6.645-0.052-13.258-0.784-19.904-0.566 c-2.749,0.09-3.629,4.607-0.678,5.008c4.065,0.553,8.08,1.426,12.143,1.963c6.887,0.909,6.443,2.759,8.263,9.15 c3.169,11.124,5.472,22.507,8.046,33.777c3.334,14.601,6.38,36.451,16.571,49.158c-0.686,1.313-0.292,3.332,1.434,3.768 c34.473,8.712,70.204,0.127,105.163-0.31c1.66-0.021,2.737-0.924,3.262-2.09c0.303-0.267,0.562-0.59,0.684-1.039 c6.583-24.089,21.122-45.512,27.457-69.411C185.764,47.688,181.318,45.578,179.2,48.051z M42.63,64.435 c-0.473,0.402-0.782,0.89-0.972,1.432c-0.385,0.317-0.7,0.697-0.915,1.146c-0.033,0.017-0.062,0.04-0.094,0.058 c-0.074-0.138-0.147-0.274-0.221-0.412c-0.914-1.715-2.423-2.086-3.758-1.659c-0.066-0.286-0.138-0.571-0.203-0.857 C38.521,64.275,40.576,64.355,42.63,64.435z M53.899,117.406c1.874,1.179,3.995,1.997,6.284,2.453 c-1.804-0.088-3.609-0.188-5.415-0.321C54.477,118.817,54.191,118.123,53.899,117.406z M126.397,117.312 c0.229-0.294,0.38-0.636,0.513-0.984c0.469,0.256,1.005,0.436,1.667,0.435h7.29C132.709,116.934,129.551,117.102,126.397,117.312z"/>
@@ -171,19 +195,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
-            <a href="zapatillas">ZAPATILLAS</a>
+            <a href="zapatillas.php">ZAPATILLAS</a>
             <a href="ropa">ROPA</a>
             <a href="accesorios">ACCESORIOS</a>
         </nav>
 
     </header>
+    <div id="carrito-flotante" class="carrito-flotante oculto">
+        <h2>Carrito de Compras</h2>
+        <div id="carrito-items"></div>
+        <button id="cerrar-carrito">Cerrar</button>
+        <button id="comprar" onclick="location.href='cart.php'">Ir a Caja</button>
+        <button id="vaciar-carrito">Vaciar Carrito</button>
+    </div>
+
     <div class="mainDivIns">
     <h2>Bienvenido, Administrador <?php echo $_SESSION["nombre"]; ?>!</h2>
     </div>
 
     <div class="mainDivIns">
-    <?php if (!empty($mensaje)): ?>
-        <h2 class="mensaje"><?php echo $mensaje; ?></h2>
+    <?php if (isset($_GET["mensaje"])): ?>
+        <h2 class="mensaje"><?php echo htmlspecialchars($_GET["mensaje"]); ?></h2>
         <?php endif; ?>
     </div>
 
@@ -232,6 +264,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="puntos">Indique la cantidad de puntos del usuario:</label>
                 <br>
                 <input type="number" id="puntos" name="puntos" placeholder="Indique la cantidad aqui" required>
+            </div>
+
+            <div class="campo">
+                <label for="tipoPago">Metodo de pago:</label>
+                <br>
+                <select name="tipoPago" id="tipoPago" required>
+                    <option value="default">Selecciona un Metodo de pago</option>
+                        <?php
+                        $sql2 = "SELECT id_metodo, tipo FROM metodo_de_pago";
+                        $result = $conn->query($sql2);
+
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                            echo '<option value="' . $row["id_metodo"] . '">' . htmlspecialchars($row["tipo"]) . '</option>';
+                            }
+                        }
+                        ?>
+                </select>
             </div>
 
             <div class="campo">
@@ -376,6 +426,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <select name="tipoProd" id="tipoProd" required onchange="mostrarCampos()">
                     <option value="default">Selecciona un tipo de producto</option>
                     <option value="tablas">Tablas de skate</option>
+                    <option value="ejes">Ejes</option>
+                    <option value="zapatillas">Zapatillas</option>
+                    <option value="camisetas">Camisetas</option>
+                    <option value="gorras">Gorras</option>
                 </select>
             </div>
 
@@ -399,6 +453,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div> 
             </div>
 
+            <div id="eje" class="oculto">
+                <div class="campo">
+                <label for="sizeEje">Tamaño:</label>
+                <br>
+                <select name="sizeEje" id="sizeEje" required step="any">
+                    <option value="default">Selecciona un tamaño</option>
+                    <option value="7.75">7.75"</option>
+                    <option value="8.0">8"</option>
+                    <option value="8.25">8.25"</option>
+                    <option value="8.5">8.5"</option>
+                    <option value="9.0">9"</option>
+                </select>
+                </div> 
+            </div>
+            <div id="zapatilla" class="oculto">
+                <div class="campo">
+                <label for="tipo">Tipo:</label>
+                <br>
+                <select name="tipo" id="tipo" required step="any">
+                    <option value="default">Selecciona un tipo</option>
+                    <option value="alta">Caña alta</option>
+                    <option value="media">Caña media</option>
+                    <option value="baja">Caña baja</option>
+                </select>
+                </div>
+                <div class="campo">
+                <label for="talla">Talla:</label>
+                <br>
+                <select name="talla" id="talla" required step="any">
+                    <option value="default">Selecciona una talla</option>
+                    <option value="40">40</option>
+                    <option value="41">41</option>
+                    <option value="42">42</option>
+                    <option value="43">43</option>
+                    <option value="44">44</option>
+                    <option value="45">45</option>
+                </select>
+                </div>  
+            </div>
             <div class="campo">
                 <label for="descripcion">Descripción:</label>
                 <br>

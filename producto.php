@@ -12,6 +12,34 @@ if (isset($_SESSION["id"])) {
         $destinoLogin = "index.php";
     }
 }
+$idProd = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$tipoProd = isset($_GET['tipo']) ? $_GET['tipo'] : '';
+
+if ($tipoProd == 'tablas') {
+    $sql = "SELECT * FROM mostrar_tablas WHERE idProd = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idProd);
+    $stmt->execute();
+    $resultSet = $stmt->get_result();
+    $producto = $resultSet->fetch_assoc();
+}
+else if($tipoProd == 'zapatillas'){
+    $sql = "SELECT * FROM mostrar_zapatillas WHERE idProd = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idProd);
+    $stmt->execute();
+    $resultSet = $stmt->get_result();
+    $producto = $resultSet->fetch_assoc();
+}
+else if($tipoProd == 'ejes'){
+    $sql = "SELECT * FROM mostrar_ejes WHERE idProd = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idProd);
+    $stmt->execute();
+    $resultSet = $stmt->get_result();
+    $producto = $resultSet->fetch_assoc();
+}
+    
 
 ?>
 <!DOCTYPE html>
@@ -21,11 +49,12 @@ if (isset($_SESSION["id"])) {
         var isLoggedIn = <?php echo $isLoggedIn; ?>;
     </script>
     <script src="scripts.js"></script>
-    
+    <input type="hidden" value="<?php echo $tipoProd; ?>" id="tipoProd">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="PI.css">
-    <title>Document</title>
+    <title>Producto</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
@@ -72,9 +101,9 @@ if (isset($_SESSION["id"])) {
 
             <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
-            <a href="zapatillas">ZAPATILLAS</a>
-            <a href="ropa">ROPA</a>
-            <a href="accesorios">ACCESORIOS</a>
+            <a href="zapatillas.php">ZAPATILLAS</a>
+            <a href="ropa.php">ROPA</a>
+            <a href="accesorios.php">ACCESORIOS</a>
         </nav>
 
         <div class="search-container">
@@ -87,6 +116,38 @@ if (isset($_SESSION["id"])) {
 
     </header>
 
+    <main class="producto-detalle">
+        <div class="imagen-container">
+            <img src="<?php echo $producto['imagenProd']; ?>" alt="<?php echo $producto['nombreProd']; ?>">
+        </div>
+        <div class="info-container">
+            <h1><?php echo $producto['nombreProd']; ?></h1>
+            <h2>Marca --> <?php echo $producto['nombreMarca']; ?></h2>
+            <p class="precio">Precio : <?php echo $producto['precioProd']; ?>€</p>
+            <hr>
+            <p class="descripcion"><?php echo $producto['descripcionProd']; ?></p>
+            <hr>
+
+            <div class="oculto" id="tabla">
+                <h2>
+                    <font color="<?php echo $producto['colorTabla']?>"> Color de tabla --> <?php echo $producto['colorTabla']?></font>
+                </h2>
+                <h2>Tamaño --> <?php echo $producto['tamañoTabla']; ?></h2>
+            </div>
+            <div class="oculto" id="eje">
+                <h2>Tamaño --> <?php echo $producto['tamañoEje']; ?></h2>
+            </div>
+            <div class="oculto" id="zapatilla">
+                <h2>Tipo --> Caña <?php echo $producto['tipoZapa']; ?></h2>
+                <h2>Talla --> <?php echo $producto['tallaZapa']; ?></h2>
+            </div>
+
+            <div>
+                <h3>Stock Disponible = <?php echo $producto['stockProd']; ?></h3>
+                <button class="btn-carrito">Añadir al carrito</button>
+            </div> 
+        </div>
+    </main>
 </body>
 </html>
 <?php
