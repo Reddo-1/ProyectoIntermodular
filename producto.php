@@ -102,8 +102,8 @@ else if($tipoProd == 'ejes'){
             <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
             <a href="zapatillas.php">ZAPATILLAS</a>
-            <a href="ropa">ROPA</a>
-            <a href="accesorios">ACCESORIOS</a>
+            <a href="ropa.php">ROPA</a>
+            <a href="accesorios.php">ACCESORIOS</a>
         </nav>
 
         <div class="search-container">
