@@ -1,7 +1,7 @@
 <?php
 include "conexion.php";
 session_start();
-$destinoLogin = "login.php"; // Por defecto, redirige a login
+$destinoLogin = "login.php";
 
 $isLoggedIn = isset($_SESSION["id"]) ? 'true' : 'false';
 
@@ -18,14 +18,14 @@ if (isset($_SESSION["id"])) {
 <html lang="en">
 <head>
     <script>
-        var isLoggedIn = <?php echo $isLoggedIn; ?>;
+    var isLoggedIn = <?php echo $isLoggedIn; ?>;
     </script>
     <script src="scripts.js"></script>
-    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="PI.css">
-    <title>Document</title>
+    <title>Skateboards</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
@@ -44,7 +44,7 @@ if (isset($_SESSION["id"])) {
                   </svg>
                </a>
 
-                <a href="#" id="carrito-icon">
+               <a href="#" id="carrito-icon">
                     <svg fill="currentColor" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                     width="16" height="16" viewBox="0 0 184.979 184.979" xml:space="preserve">
                     <g> <path d="M179.2,48.051c-48-2.877-95.319,10.319-143.511,8.179c-0.368-0.016-0.701,0.019-1.015,0.08 c-2.479-10.772-5.096-21.509-8.742-31.943c-0.543-1.555-1.806-2.661-3.513-2.674c-6.645-0.052-13.258-0.784-19.904-0.566 c-2.749,0.09-3.629,4.607-0.678,5.008c4.065,0.553,8.08,1.426,12.143,1.963c6.887,0.909,6.443,2.759,8.263,9.15 c3.169,11.124,5.472,22.507,8.046,33.777c3.334,14.601,6.38,36.451,16.571,49.158c-0.686,1.313-0.292,3.332,1.434,3.768 c34.473,8.712,70.204,0.127,105.163-0.31c1.66-0.021,2.737-0.924,3.262-2.09c0.303-0.267,0.562-0.59,0.684-1.039 c6.583-24.089,21.122-45.512,27.457-69.411C185.764,47.688,181.318,45.578,179.2,48.051z M42.63,64.435 c-0.473,0.402-0.782,0.89-0.972,1.432c-0.385,0.317-0.7,0.697-0.915,1.146c-0.033,0.017-0.062,0.04-0.094,0.058 c-0.074-0.138-0.147-0.274-0.221-0.412c-0.914-1.715-2.423-2.086-3.758-1.659c-0.066-0.286-0.138-0.571-0.203-0.857 C38.521,64.275,40.576,64.355,42.63,64.435z M53.899,117.406c1.874,1.179,3.995,1.997,6.284,2.453 c-1.804-0.088-3.609-0.188-5.415-0.321C54.477,118.817,54.191,118.123,53.899,117.406z M126.397,117.312 c0.229-0.294,0.38-0.636,0.513-0.984c0.469,0.256,1.005,0.436,1.667,0.435h7.29C132.709,116.934,129.551,117.102,126.397,117.312z"/>
@@ -63,66 +63,155 @@ if (isset($_SESSION["id"])) {
 
                     </svg>
                 </a>
-                
             </div>
 
         </div>
 
         <nav class="barraNavegacion">
 
+            <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
-            <a href="zapatillas.php">ZAPATILLAS</a>
             <a href="ropa">ROPA</a>
             <a href="accesorios">ACCESORIOS</a>
         </nav>
 
         <div class="search-container">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="16" fill="currentColor" class="iconoSearch" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="iconoSearch" viewBox="0 0 16 16">
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-            </svg>
+              </svg>
             <input type="text" class="search-input" id="search"  placeholder="Buscar...">
         </div>
         <div id="search-results" class="resultados-busqueda"></div>
 
     </header>
+
     <div id="carrito-flotante" class="carrito-flotante oculto">
         <h2>Carrito de Compras</h2>
         <div id="carrito-items"></div>
         <button id="cerrar-carrito">Cerrar</button>
-        <button id="comprar" onclick="location.href='cart.php'">Ir a Caja</button>
+        <button id="comprar"onclick="location.href='cart.php'">Ir a Caja</button>
         <button id="vaciar-carrito">Vaciar Carrito</button>
     </div>
-    <section class="video">
 
-        <iframe width="100%" height="700" 
-        src="https://www.youtube.com/embed/videoseries?list=PLBHGV5FeYECy7dAee8qMaz8_w8Owjfkc5&autoplay=1&mute=1&loop=1" 
-        frameborder="0" 
-        allow="autoplay; encrypted-media" 
-        allowfullscreen>
-        </iframe>
+    <h2 class="tipoProducto">Zapatillas de Caña Alta</h2>
+    <?php
+    $sql = "SELECT * from mostrar_zapatillas where tipoZapa='alta'";
+    $resultSet = $conn->query($sql);
+    ?>
+    <section class="productoMostrar">
+        <?php
+        if($resultSet->num_rows > 0){
+            
+            while ($row = $resultSet->fetch_assoc()){
+        ?>
+        
+        <div class="mainDiv">
+        <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
+            <h3><?php echo $row['nombreProd'];?></h3>
+            <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
+            <div class="imagenTabla">
+                <img src="<?php echo $row['imagenProd'];?>" alt="Imagen no encontrada">
+            </div>
+            <div class="infoTabla">
+                
+                <p class="stock">Stock: <?php echo $row['stockProd'];?>   talla: <?php echo $row['tallaZapa'];?></p>
+        </a>
+                <div class="precio-boton">
+                    <h3><?php echo $row['precioProd'];?>€</h3>
+                    <button class="agregar-carrito" 
+                    data-id="<?php echo $row['idProd']; ?>" 
+                    data-nombre="<?php echo $row['nombreProd']; ?>" 
+                    data-precio="<?php echo $row['precioProd']; ?>">Agregar al carrito</button>
+                </div>
+            </div>
+        
+        </div><?php }} else{
+            echo "Zapatillas no encontradas";
+        }
+        ?>
+        
+    </section>
 
+    <h2 class="tipoProducto">Zapatillas de Caña Media</h2>
+    <?php
+    $sql2 = "SELECT * from mostrar_zapatillas where tipoZapa='media'";
+    $resultSet2 = $conn->query($sql2);
+    ?>
+    <section class="productoMostrar">
+        <?php
+        if($resultSet2->num_rows > 0){
+            while ($row = $resultSet2->fetch_assoc()){
+        ?>
+        
+        <div class="mainDiv">
+        <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
+            <h3><?php echo $row['nombreProd'];?></h3>
+            <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
+            <div class="imagenTabla">
+                <img src="<?php echo $row['imagenProd'];?>" alt="Imagen no encontrada">
+            </div>
+            <div class="infoTabla">
+                
+                <p class="descripcion"><?php echo $row['descripcionProd'];?></p>
+                <p class="stock">Stock: <?php echo $row['stockProd'];?>   talla: <?php echo $row['tallaZapa'];?></p>
+        </a>
+                <div class="precio-boton">
+                    <h3><?php echo $row['precioProd'];?>€</h3>
+                    <button class="agregar-carrito" 
+                    data-id="<?php echo $row['idProd']; ?>" 
+                    data-nombre="<?php echo $row['nombreProd']; ?>" 
+                    data-precio="<?php echo $row['precioProd']; ?>">Agregar al carrito</button>
+                </div>
+            </div>
+        
+        </div><?php }} else{
+            echo "Zapatillas no encontradas";
+        }
+        ?>
+        
     </section>
     
-    <section class="acercaDe">
-        <h2>Acerca De XanaX skateboards</h2>
-        <p>
-            Somos una pequeña empresa creada por y para skaters , con esto queremos decir que además de daros a conocer
-            nuestros diseños originales para tablas y demás queremos daros otras alternativas para que la marca no sea como
-            cualquier otra generica que conozcas.
-        </p>
-        <p>
-            Nuestro objetivo es dar a conocer a todos aquellos skaters que aun teniendo el talento y la habilidad para ser 
-            patrocinados estan olvidados pero , os preguntareis como conseguiremos eso verdad? Pues muy sencillo crearemos eventos
-            con entrada totalmente gratuita con opción a participar en competiciones o retos donde no solo obtendrás visibilidad a 
-            traves de nuestras redes pero te nutrirás alrededor de cientos de skaters que compartan los mismos entretenimientos y 
-            ambiciones que tu! 
-        </p>
-        <h2>A que esperas!</h2>
+    <h2 class="tipoProducto">Zapatillas de Caña Baja</h2>
+    <?php
+    $sql3 = "SELECT * from mostrar_zapatillas where tipoZapa='baja'";
+    $resultSet3 = $conn->query($sql3);
+    ?>
+    <section class="productoMostrar">
+        <?php
+        if($resultSet3->num_rows > 0){
+            while ($row = $resultSet3->fetch_assoc()){
+        ?>
+        
+        <div class="mainDiv">
+        <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
+            <h3><?php echo $row['nombreProd'];?></h3>
+            <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
+            <div class="imagenTabla">
+                <img src="<?php echo $row['imagenProd'];?>" alt="Imagen no encontrada">
+            </div>
+            <div class="infoTabla">
+                
+                <p class="descripcion"><?php echo $row['descripcionProd'];?></p>
+                <p class="stock">Stock: <?php echo $row['stockProd'];?>   talla: <?php echo $row['tallaZapa'];?></p>
+        </a>
+                <div class="precio-boton">
+                    <h3><?php echo $row['precioProd'];?>€</h3>
+                    <button class="agregar-carrito" 
+                    data-id="<?php echo $row['idProd']; ?>" 
+                    data-nombre="<?php echo $row['nombreProd']; ?>" 
+                    data-precio="<?php echo $row['precioProd']; ?>">Agregar al carrito</button>
+                </div>
+            </div>
+        
+        </div><?php }} else{
+            echo "Zapatillas no encontradas";
+        }
+        ?>
+        
     </section>
 
     
     
-      
 </body>
 </html>
 <?php

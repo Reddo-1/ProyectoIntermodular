@@ -70,7 +70,7 @@ if (isset($_SESSION["id"])) {
         <nav class="barraNavegacion">
 
             <a href="index.php">HOME</a>
-            <a href="zapatillas">ZAPATILLAS</a>
+            <a href="zapatillas.php">ZAPATILLAS</a>
             <a href="ropa">ROPA</a>
             <a href="accesorios">ACCESORIOS</a>
         </nav>
@@ -113,7 +113,6 @@ if (isset($_SESSION["id"])) {
             </div>
             <div class="infoTabla">
                 
-                <p class="descripcion"><?php echo $row['descripcionProd'];?></p>
                 <p class="stock">Stock: <?php echo $row['stockProd'];?>   Tamaño: <?php echo $row['tamañoTabla'];?></p>
         </a>
                 <div class="precio-boton">
@@ -127,6 +126,44 @@ if (isset($_SESSION["id"])) {
         
         </div><?php }} else{
             echo "Tablas no encontradas";
+        }
+        ?>
+        
+    </section>
+
+    <h2 class="tipoProducto">EJES</h2>
+    <?php
+    $sql2 = "SELECT * from mostrar_ejes";
+    $resultSet2 = $conn->query($sql2);
+    ?>
+    <section class="productoMostrar">
+        <?php
+        if($resultSet2->num_rows > 0){
+            while ($row = $resultSet2->fetch_assoc()){
+        ?>
+        
+        <div class="mainDiv">
+        <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
+            <h3><?php echo $row['nombreProd'];?></h3>
+            <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
+            <div class="imagenTabla">
+                <img src="<?php echo $row['imagenProd'];?>" alt="Imagen no encontrada">
+            </div>
+            <div class="infoTabla">
+                
+                <p class="stock">Stock: <?php echo $row['stockProd'];?>   Tamaño: <?php echo $row['tamañoEje'];?></p>
+        </a>
+                <div class="precio-boton">
+                    <h3><?php echo $row['precioProd'];?>€</h3>
+                    <button class="agregar-carrito" 
+                    data-id="<?php echo $row['idProd']; ?>" 
+                    data-nombre="<?php echo $row['nombreProd']; ?>" 
+                    data-precio="<?php echo $row['precioProd']; ?>">Agregar al carrito</button>
+                </div>
+            </div>
+        
+        </div><?php }} else{
+            echo "Ejes no encontrados";
         }
         ?>
         

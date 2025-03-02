@@ -71,7 +71,7 @@ if (isset($_SESSION["id"])) {
         <nav class="barraNavegacion">
             <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
-            <a href="zapatillas">ZAPATILLAS</a>
+            <a href="zapatillas.php">ZAPATILLAS</a>
             <a href="ropa">ROPA</a>
             <a href="accesorios">ACCESORIOS</a>
         </nav>

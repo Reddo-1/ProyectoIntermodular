@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 $stmt = $conn->prepare("INSERT INTO productos (es_novedad, es_oferta, descripcion, nombre, precio, stock_disponible, id_marca_producto,id_proveedor, imagen,tipo_producto) 
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("iissdiiis", $novedad, $oferta, $descripcion, $nombre, $precio, $stock, $idMarca,$idProveedor, $imagen,$tipoProd);
+                $stmt->bind_param("iissdiiiss", $novedad, $oferta, $descripcion, $nombre, $precio, $stock, $idMarca,$idProveedor, $imagen,$tipoProd);
                 $stmt->execute();
 
                 $producto_id = $conn->insert_id;
@@ -107,6 +107,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
                     $stmt_tablas = $conn->prepare("INSERT INTO tablas (id_tabla, tamanyo, color_hex) VALUES (?, ?, ?)");
                     $stmt_tablas->bind_param("ids", $producto_id, $size, $color);
+                    $stmt_tablas->execute();
+                }
+                else if ($tipoProd == "ejes") {
+                    $size = isset($_POST["sizeEje"]) ? floatval($_POST["sizeEje"]) : 0.0;
+                    
+            
+                    $stmt_tablas = $conn->prepare("INSERT INTO ejes (id_eje, tamanyo) VALUES (?, ?)");
+                    $stmt_tablas->bind_param("id", $producto_id, $size);
+                    $stmt_tablas->execute();
+                }
+                else if ($tipoProd == "zapatillas") {
+                    $talla = isset($_POST["talla"]) ? intval($_POST["talla"]) : 0.0;
+                    $tipo = $conn->real_escape_string($_POST["tipo"]);
+            
+                    $stmt_tablas = $conn->prepare("INSERT INTO zapatillas (id_zapatilla, tipo, talla) VALUES (?, ?, ?)");
+                    $stmt_tablas->bind_param("isi", $producto_id, $tipo, $talla);
                     $stmt_tablas->execute();
                 }
 
@@ -179,7 +195,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
-            <a href="zapatillas">ZAPATILLAS</a>
+            <a href="zapatillas.php">ZAPATILLAS</a>
             <a href="ropa">ROPA</a>
             <a href="accesorios">ACCESORIOS</a>
         </nav>
@@ -410,6 +426,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <select name="tipoProd" id="tipoProd" required onchange="mostrarCampos()">
                     <option value="default">Selecciona un tipo de producto</option>
                     <option value="tablas">Tablas de skate</option>
+                    <option value="ejes">Ejes</option>
+                    <option value="zapatillas">Zapatillas</option>
+                    <option value="camisetas">Camisetas</option>
+                    <option value="gorras">Gorras</option>
                 </select>
             </div>
 
@@ -433,6 +453,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div> 
             </div>
 
+            <div id="eje" class="oculto">
+                <div class="campo">
+                <label for="sizeEje">Tamaño:</label>
+                <br>
+                <select name="sizeEje" id="sizeEje" required step="any">
+                    <option value="default">Selecciona un tamaño</option>
+                    <option value="7.75">7.75"</option>
+                    <option value="8.0">8"</option>
+                    <option value="8.25">8.25"</option>
+                    <option value="8.5">8.5"</option>
+                    <option value="9.0">9"</option>
+                </select>
+                </div> 
+            </div>
+            <div id="zapatilla" class="oculto">
+                <div class="campo">
+                <label for="tipo">Tipo:</label>
+                <br>
+                <select name="tipo" id="tipo" required step="any">
+                    <option value="default">Selecciona un tipo</option>
+                    <option value="alta">Caña alta</option>
+                    <option value="media">Caña media</option>
+                    <option value="baja">Caña baja</option>
+                </select>
+                </div>
+                <div class="campo">
+                <label for="talla">Talla:</label>
+                <br>
+                <select name="talla" id="talla" required step="any">
+                    <option value="default">Selecciona una talla</option>
+                    <option value="40">40</option>
+                    <option value="41">41</option>
+                    <option value="42">42</option>
+                    <option value="43">43</option>
+                    <option value="44">44</option>
+                    <option value="45">45</option>
+                </select>
+                </div>  
+            </div>
             <div class="campo">
                 <label for="descripcion">Descripción:</label>
                 <br>

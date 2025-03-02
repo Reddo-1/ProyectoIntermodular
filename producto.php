@@ -23,6 +23,22 @@ if ($tipoProd == 'tablas') {
     $resultSet = $stmt->get_result();
     $producto = $resultSet->fetch_assoc();
 }
+else if($tipoProd == 'zapatillas'){
+    $sql = "SELECT * FROM mostrar_zapatillas WHERE idProd = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idProd);
+    $stmt->execute();
+    $resultSet = $stmt->get_result();
+    $producto = $resultSet->fetch_assoc();
+}
+else if($tipoProd == 'ejes'){
+    $sql = "SELECT * FROM mostrar_ejes WHERE idProd = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idProd);
+    $stmt->execute();
+    $resultSet = $stmt->get_result();
+    $producto = $resultSet->fetch_assoc();
+}
     
 
 ?>
@@ -85,7 +101,7 @@ if ($tipoProd == 'tablas') {
 
             <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
-            <a href="zapatillas">ZAPATILLAS</a>
+            <a href="zapatillas.php">ZAPATILLAS</a>
             <a href="ropa">ROPA</a>
             <a href="accesorios">ACCESORIOS</a>
         </nav>
@@ -117,6 +133,13 @@ if ($tipoProd == 'tablas') {
                     <font color="<?php echo $producto['colorTabla']?>"> Color de tabla --> <?php echo $producto['colorTabla']?></font>
                 </h2>
                 <h2>Tamaño --> <?php echo $producto['tamañoTabla']; ?></h2>
+            </div>
+            <div class="oculto" id="eje">
+                <h2>Tamaño --> <?php echo $producto['tamañoEje']; ?></h2>
+            </div>
+            <div class="oculto" id="zapatilla">
+                <h2>Tipo --> Caña <?php echo $producto['tipoZapa']; ?></h2>
+                <h2>Talla --> <?php echo $producto['tallaZapa']; ?></h2>
             </div>
 
             <div>
