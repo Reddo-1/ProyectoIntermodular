@@ -1,5 +1,7 @@
-primera version del proyecto:
-    existen las funcionalidades de iniciar sesion , panel de control , ver productos .
-    
-    al iniciar sesión si eres una cuenta de administrador al volver a pulsar el icono de cuenta o "personita" te redirigirá al panel de 
-    control
+Primer lanzamiento del proyecto para el publico (Profesores ;-)
+
+Existen algunas cosas sin funcionar como un carrito con conexión de bases de datos u las paginas ropa y accesorios pero en brevas estarán
+terminadas.
+
+A todos los profesores les he creado una cuenta de administrador donde tendrán que usar su correo del insituto y la contraseña 1234 para
+acceder.
