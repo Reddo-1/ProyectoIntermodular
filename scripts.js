@@ -6,6 +6,9 @@ function mostrarCampos() {
         const tabla = document.getElementById("tabla");
         const eje = document.getElementById("eje");
         const zapatilla = document.getElementById("zapatilla");
+        const pantalon = document.getElementById("pantalon");
+        const camiseta = document.getElementById("camiseta");
+        const sudadera = document.getElementById("sudadera");
 
         tabla.classList.add("oculto");
         eje.classList.add("oculto");
@@ -17,6 +20,12 @@ function mostrarCampos() {
             eje.classList.remove("oculto");
         } else if (valorSeleccionado === "zapatillas") {
             zapatilla.classList.remove("oculto");
+        }else if (valorSeleccionado === "camisetas") {
+            camiseta.classList.remove("oculto");
+        }else if (valorSeleccionado === "pantalones") {
+            pantalon.classList.remove("oculto");
+        }else if (valorSeleccionado === "sudaderas") {
+            sudadera.classList.remove("oculto");
         }      
     } 
 }

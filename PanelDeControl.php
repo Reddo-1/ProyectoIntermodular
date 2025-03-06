@@ -105,27 +105,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $size = isset($_POST["size"]) ? floatval($_POST["size"]) : 0.0;
                     $color = $conn->real_escape_string($_POST["colorTabla"]);
             
-                    $stmt_tablas = $conn->prepare("INSERT INTO tablas (id_tabla, tamanyo, color_hex) VALUES (?, ?, ?)");
-                    $stmt_tablas->bind_param("ids", $producto_id, $size, $color);
-                    $stmt_tablas->execute();
+                    $stmt_unico = $conn->prepare("INSERT INTO tablas (id_tabla, tamanyo, color_hex) VALUES (?, ?, ?)");
+                    $stmt_unico->bind_param("ids", $producto_id, $size, $color);
+                    $stmt_unico->execute();
                 }
                 else if ($tipoProd == "ejes") {
                     $size = isset($_POST["sizeEje"]) ? floatval($_POST["sizeEje"]) : 0.0;
                     
             
-                    $stmt_tablas = $conn->prepare("INSERT INTO ejes (id_eje, tamanyo) VALUES (?, ?)");
-                    $stmt_tablas->bind_param("id", $producto_id, $size);
-                    $stmt_tablas->execute();
+                    $stmt_unico = $conn->prepare("INSERT INTO ejes (id_eje, tamanyo) VALUES (?, ?)");
+                    $stmt_unico->bind_param("id", $producto_id, $size);
+                    $stmt_unico->execute();
                 }
                 else if ($tipoProd == "zapatillas") {
-                    $talla = isset($_POST["talla"]) ? intval($_POST["talla"]) : 0.0;
-                    $tipo = $conn->real_escape_string($_POST["tipo"]);
+                    $tallaZapa = isset($_POST["tallaZapa"]) ? intval($_POST["tallaZapa"]) : 0.0;
+                    $tipoZapa = $conn->real_escape_string($_POST["tipoZapa"]);
+                    $colorZapa = $conn->real_escape_string($_POST["colorZapa"]);
             
-                    $stmt_tablas = $conn->prepare("INSERT INTO zapatillas (id_zapatilla, tipo, talla) VALUES (?, ?, ?)");
-                    $stmt_tablas->bind_param("isi", $producto_id, $tipo, $talla);
-                    $stmt_tablas->execute();
-                }
+                    $stmt_unico = $conn->prepare("INSERT INTO zapatillas (id_zapatilla, tipo, color_hex, talla) VALUES (?, ?, ?,?)");
+                    $stmt_unico->bind_param("issi", $producto_id, $tipoZapa, $colorZapa, $tallaZapa);
 
+                    $stmt_unico->execute();
+                }
+                else if ($tipoProd == "camisetas") {
+                    $tallaCami = $conn->real_escape_string($_POST["tallaCami"]);
+                    $generoCami = $conn->real_escape_string($_POST["generoCami"]);
+                    $colorCami = $conn->real_escape_string($_POST["colorCami"]);
+            
+                    $stmt_unico = $conn->prepare("INSERT INTO camisetas (id_camiseta, genero, color_hex, talla) VALUES (?, ?, ?, ?)");
+                    $stmt_unico->bind_param("isss", $producto_id, $generoCami, $colorCami, $tallaCami);
+
+                    $stmt_unico->execute();
+                }
+                else if ($tipoProd == "sudaderas") {
+                    $tallaSud = $conn->real_escape_string($_POST["tallaSud"]);
+                    $generoSud = $conn->real_escape_string($_POST["generoSud"]);
+                    $colorSud = $conn->real_escape_string($_POST["colorSud"]);
+                    $cremallera = isset($_POST["cremalleraSud"]) ? 1 : 0;
+                    $capucha = isset($_POST["capuchaSud"]) ? 1 : 0;
+            
+                    $stmt_unico = $conn->prepare("INSERT INTO sudaderas (id_sudadera, genero, color_hex, talla, tiene_cremallera, tiene_capucha)
+                                                     VALUES (?, ?, ?, ?, ?, ?)");
+                    $stmt_unico->bind_param("isssii", $producto_id, $generoSud, $colorSud, $tallaSud, $cremallera, $capucha);
+
+                    $stmt_unico->execute();
+                }
+                else if ($tipoProd == "pantalones") {
+                    $tallaPant = isset($_POST["tallaPant"]) ? intval($_POST["tallaPant"]) : 0.0;
+                    $tipoPant = $conn->real_escape_string($_POST["tipoPant"]);
+                    $colorPant = $conn->real_escape_string($_POST["colorPant"]);
+                    $generoPant = $conn->real_escape_string($_POST["generoPant"]);
+                    $cortos = isset($_POST["cortosPant"]) ? 1 : 0;
+            
+                    $stmt_unico = $conn->prepare("INSERT INTO pantalones (id_pantalon, tipo, color_hex, talla, genero, son_cortos) 
+                                                    VALUES (?, ?, ?, ?, ?, ?)");
+                    $stmt_unico->bind_param("issssi", $producto_id, $tipoPant, $colorPant, $tallaPant, $generoPant, $cortos);
+
+                    $stmt_unico->execute();
+                }
                 $mensaje = "¡Producto registrado exitosamente!";
 
             }
@@ -429,7 +466,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <option value="ejes">Ejes</option>
                     <option value="zapatillas">Zapatillas</option>
                     <option value="camisetas">Camisetas</option>
-                    <option value="gorras">Gorras</option>
+                    <option value="sudaderas">Sudaderas</option>
+                    <option value="pantalones">Pantalones</option>
                 </select>
             </div>
 
@@ -455,42 +493,179 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div id="eje" class="oculto">
                 <div class="campo">
-                <label for="sizeEje">Tamaño:</label>
-                <br>
-                <select name="sizeEje" id="sizeEje" required step="any">
-                    <option value="default">Selecciona un tamaño</option>
-                    <option value="7.75">7.75"</option>
-                    <option value="8.0">8"</option>
-                    <option value="8.25">8.25"</option>
-                    <option value="8.5">8.5"</option>
-                    <option value="9.0">9"</option>
-                </select>
+                    <label for="sizeEje">Tamaño:</label>
+                    <br>
+                    <select name="sizeEje" id="sizeEje" required step="any">
+                        <option value="default">Selecciona un tamaño</option>
+                        <option value="7.75">7.75"</option>
+                        <option value="8.0">8"</option>
+                        <option value="8.25">8.25"</option>
+                        <option value="8.5">8.5"</option>
+                        <option value="9.0">9"</option>
+                    </select>
                 </div> 
             </div>
             <div id="zapatilla" class="oculto">
                 <div class="campo">
-                <label for="tipo">Tipo:</label>
-                <br>
-                <select name="tipo" id="tipo" required step="any">
-                    <option value="default">Selecciona un tipo</option>
-                    <option value="alta">Caña alta</option>
-                    <option value="media">Caña media</option>
-                    <option value="baja">Caña baja</option>
-                </select>
+                    <label for="tipoZapa">Tipo:</label>
+                    <br>
+                    <select name="tipoZapa" id="tipo" required step="any">
+                        <option value="default">Selecciona un tipo</option>
+                        <option value="alta">Caña alta</option>
+                        <option value="media">Caña media</option>
+                        <option value="baja">Caña baja</option>
+                    </select>
                 </div>
                 <div class="campo">
-                <label for="talla">Talla:</label>
-                <br>
-                <select name="talla" id="talla" required step="any">
-                    <option value="default">Selecciona una talla</option>
-                    <option value="40">40</option>
-                    <option value="41">41</option>
-                    <option value="42">42</option>
-                    <option value="43">43</option>
-                    <option value="44">44</option>
-                    <option value="45">45</option>
-                </select>
-                </div>  
+                    <label for="tallaZapa">Talla:</label>
+                    <br>
+                    <select name="tallaZapa" id="tallaZapa" required>
+                        <option value="default">Selecciona la talla unica de zapatilla</option>
+                        <option value="39">39</option>
+                        <option value="40">40</option>
+                        <option value="41">41</option>
+                        <option value="42">42</option>
+                        <option value="43">43</option>
+                        <option value="44">44</option>
+                        <option value="45">45</option>
+                        <option value="46">46</option>
+                        <option value="47">47</option>
+                        <option value="48">48</option>
+                        <option value="49">49</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="colorZapa">color:</label>
+                    <br>
+                    <input type="color" id="colorZapa" name="colorZapa" required>
+                </div>   
+            </div>
+
+            <div id="camiseta" class="oculto">
+
+                <div class="campo">
+                    <label for="generoCami">Genero:</label>
+                    <br>
+                    <select name="generoCami" id="generoCami" required step="any">
+                        <option value="default">Selecciona un genero</option>
+                        <option value="masculino">masculino</option>
+                        <option value="femenino">femenino</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="colorCami">color:</label>
+                    <br>
+                    <input type="color" id="colorCami" name="colorCami" required>
+                </div>
+
+                <div class="campo">
+                    <label for="tallaCami">Talla:</label>
+                    <br>
+                    <select name="tallaCami" id="tallaCami" required step="any">
+                        <option value="default">Selecciona una talla</option>
+                        <option value="XS">XS</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                    </select>
+                </div>
+
+            </div>
+            <div id="sudadera" class="oculto">
+
+                <div class="campo">
+                    <label for="generoSud">Genero:</label>
+                    <br>
+                    <select name="generoSud" id="generoSud" required step="any">
+                        <option value="default">Selecciona un genero</option>
+                        <option value="masculino">masculino</option>
+                        <option value="femenino">femenino</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="colorSud">color:</label>
+                    <br>
+                    <input type="color" id="colorSud" name="colorSud" required>
+                </div>
+
+                <div class="campo">
+                    <label for="tallaSud">Talla:</label>
+                    <br>
+                    <select name="tallaSud" id="tallaSud" required step="any">
+                        <option value="default">Selecciona una talla</option>
+                        <option value="XS">XS</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="capuchaSud">Tiene capucha la sudadera? --</label>
+                    <input type="checkbox" id="capuchaSud" name="capuchaSud">
+                </div>
+
+                <div class="campo">
+                    <label for="cremalleraSud">Tiene cremallera la sudadera? --</label>
+                    <input type="checkbox" id="cremalleraSud" name="cremalleraSud">
+                </div>
+                   
+            </div>
+            <div id="pantalon" class="oculto">
+
+                <div class="campo">
+                    <label for="generoPant">Genero:</label>
+                    <br>
+                    <select name="generoPant" id="generoPant" required step="any">
+                        <option value="default">Selecciona un genero</option>
+                        <option value="masculino">masculino</option>
+                        <option value="femenino">femenino</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="colorPant">color:</label>
+                    <br>
+                    <input type="color" id="colorPant" name="colorPant" required>
+                </div>
+
+                <div class="campo">
+                    <label for="tallaPant">Talla:</label>
+                    <br>
+                    <select name="tallaPant" id="tallaPant" required step="any">
+                        <option value="default">Selecciona una talla</option>
+                        <option value="XS">XS</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="tipoPant">Tipo de pantalon:</label>
+                    <br>
+                    <select name="tipoPant" id="tipoPant" required step="any">
+                        <option value="default">Selecciona un tipo</option>
+                        <option value="chinos">chinos</option>
+                        <option value="loose fit">loose fit</option>
+                        <option value="straight fit">straight fit</option>
+                        <option value="slim fit">slim fit</option>
+                        <option value="cargo">cargo</option>
+                        <option value="chandal">chandal</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="cortosPant">Son cortos los pantalones? --</label>
+                    <input type="checkbox" id="cortosPant" name="cortosPant">
+                </div>
+
             </div>
             <div class="campo">
                 <label for="descripcion">Descripción:</label>

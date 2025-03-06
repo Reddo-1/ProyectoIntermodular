@@ -554,3 +554,11 @@ button:hover {
     background-color: white;
     border: none;
 }
+#hombre h1{
+    text-align:center;
+    font-size:xx-large;
+}
+#mujer h1{
+    text-align:center;
+    font-size:xx-large;
+}

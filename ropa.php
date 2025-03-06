@@ -71,7 +71,12 @@ if (isset($_SESSION["id"])) {
 
             <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
-            <a href="ropa.php">ROPA</a>
+            <a href="ropa">ROPA</a>
+            
+        </nav>
+        <nav class="barraNavegacion">
+            <a href="#hombre">Ropa de Hombre</a>
+            <a href="#mujer">Ropa de Mujer</a>
         </nav>
 
         <div class="search-container">
@@ -92,29 +97,31 @@ if (isset($_SESSION["id"])) {
         <button id="vaciar-carrito">Vaciar Carrito</button>
     </div>
 
-    <h2 class="tipoProducto">Zapatillas de Caña Alta</h2>
-    <?php
-    $sql = "SELECT * from mostrar_zapatillas where tipoZapa='alta'";
-    $resultSet = $conn->query($sql);
-    ?>
-    <section class="productoMostrar">
+    <section id="hombre">
+        <h1>Ropa De Hombre</h1>
+
+        <h2 class="tipoProducto">Camisetas</h2>
         <?php
-        if($resultSet->num_rows > 0){
-            
-            while ($row = $resultSet->fetch_assoc()){
+        $sql = "SELECT * from mostrar_camisetas where generoCami='masculino'";
+        $resultSet = $conn->query($sql);
         ?>
+        <section class="productoMostrar">
+            <?php
+            if($resultSet->num_rows > 0){
+                while ($row = $resultSet->fetch_assoc()){
+            ?>
         
-        <div class="mainDiv">
-        <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
-            <h3><?php echo $row['nombreProd'];?></h3>
-            <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
-            <div class="imagenTabla">
-                <img src="<?php echo $row['imagenProd'];?>" alt="Imagen no encontrada">
-            </div>
-            <div class="infoTabla">
+            <div class="mainDiv">
+            <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
+                <h3><?php echo $row['nombreProd'];?></h3>
+                <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
+                <div class="imagenTabla">
+                    <img src="<?php echo $row['imagenProd'];?>" alt="Imagen no encontrada">
+                </div>
+                <div class="infoTabla">
                 
-                <p class="stock">Stock: <?php echo $row['stockProd'];?>   talla: <?php echo $row['tallaZapa'];?></p>
-        </a>
+                    <p class="stock">Stock: <?php echo $row['stockProd'];?>   talla: <?php echo $row['tallaCami'];?></p>
+            </a>
                 <div class="precio-boton">
                     <h3><?php echo $row['precioProd'];?>€</h3>
                     <button class="agregar-carrito" 
@@ -125,35 +132,112 @@ if (isset($_SESSION["id"])) {
             </div>
         
         </div><?php }} else{
-            echo "Zapatillas no encontradas";
+            echo "Camisetas no encontradas";
         }
         ?>
         
+        </section>
+        <h2 class="tipoProducto">Sudaderas</h2>
+        <?php
+        $sql = "SELECT * from mostrar_sudaderas where generoSud='masculino'";
+        $resultSet = $conn->query($sql);
+        ?>
+        <section class="productoMostrar">
+            <?php
+            if($resultSet->num_rows > 0){
+                while ($row = $resultSet->fetch_assoc()){
+            ?>
+        
+            <div class="mainDiv">
+            <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
+                <h3><?php echo $row['nombreProd'];?></h3>
+                <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
+                <div class="imagenTabla">
+                    <img src="<?php echo $row['imagenProd'];?>" alt="Imagen no encontrada">
+                </div>
+                <div class="infoTabla">
+                
+                    <p class="stock">Stock: <?php echo $row['stockProd'];?>   talla: <?php echo $row['tallaSud'];?></p>
+            </a>
+                <div class="precio-boton">
+                    <h3><?php echo $row['precioProd'];?>€</h3>
+                    <button class="agregar-carrito" 
+                    data-id="<?php echo $row['idProd']; ?>" 
+                    data-nombre="<?php echo $row['nombreProd']; ?>" 
+                    data-precio="<?php echo $row['precioProd']; ?>">Agregar al carrito</button>
+                </div>
+            </div>
+        
+        </div><?php }} else{
+            echo "Sudaderas no encontradas";
+        }
+        ?>
+        
+        </section>
+        <h2 class="tipoProducto">Pantalones</h2>
+        <?php
+        $sql = "SELECT * from mostrar_pantalones where generoPant='masculino'";
+        $resultSet = $conn->query($sql);
+        ?>
+        <section class="productoMostrar">
+            <?php
+            if($resultSet->num_rows > 0){
+                while ($row = $resultSet->fetch_assoc()){
+            ?>
+        
+            <div class="mainDiv">
+            <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
+                <h3><?php echo $row['nombreProd'];?></h3>
+                <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
+                <div class="imagenTabla">
+                    <img src="<?php echo $row['imagenProd'];?>" alt="Imagen no encontrada">
+                </div>
+                <div class="infoTabla">
+                
+                    <p class="stock">Stock: <?php echo $row['stockProd'];?>   talla: <?php echo $row['tallaPant'];?></p>
+            </a>
+                <div class="precio-boton">
+                    <h3><?php echo $row['precioProd'];?>€</h3>
+                    <button class="agregar-carrito" 
+                    data-id="<?php echo $row['idProd']; ?>" 
+                    data-nombre="<?php echo $row['nombreProd']; ?>" 
+                    data-precio="<?php echo $row['precioProd']; ?>">Agregar al carrito</button>
+                </div>
+            </div>
+        
+        </div><?php }} else{
+            echo "Pantalones no encontrados";
+        }
+        ?>
+        
+        </section>
     </section>
 
-    <h2 class="tipoProducto">Zapatillas de Caña Media</h2>
-    <?php
-    $sql2 = "SELECT * from mostrar_zapatillas where tipoZapa='media'";
-    $resultSet2 = $conn->query($sql2);
-    ?>
-    <section class="productoMostrar">
+    <section id="mujer">
+        <h1>Ropa De Mujer</h1>
+
+        <h2 class="tipoProducto">Camisetas</h2>
         <?php
-        if($resultSet2->num_rows > 0){
-            while ($row = $resultSet2->fetch_assoc()){
+        $sql = "SELECT * from mostrar_camisetas where generoCami='femenino'";
+        $resultSet = $conn->query($sql);
         ?>
+        <section class="productoMostrar">
+            <?php
+            if($resultSet->num_rows > 0){
+                while ($row = $resultSet->fetch_assoc()){
+            ?>
         
-        <div class="mainDiv">
-        <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
-            <h3><?php echo $row['nombreProd'];?></h3>
-            <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
-            <div class="imagenTabla">
-                <img src="<?php echo $row['imagenProd'];?>" alt="Imagen no encontrada">
-            </div>
-            <div class="infoTabla">
+            <div class="mainDiv">
+            <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
+                <h3><?php echo $row['nombreProd'];?></h3>
+                <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
+                <div class="imagenTabla">
+                    <img src="<?php echo $row['imagenProd'];?>" alt="Imagen no encontrada">
+                </div>
+                <div class="infoTabla">
                 
-                <p class="descripcion"><?php echo $row['descripcionProd'];?></p>
-                <p class="stock">Stock: <?php echo $row['stockProd'];?>   talla: <?php echo $row['tallaZapa'];?></p>
-        </a>
+                    <p class="stock">Stock: <?php echo $row['stockProd'];?>   talla: <?php echo $row['tallaCami'];?></p>
+            </a>
                 <div class="precio-boton">
                     <h3><?php echo $row['precioProd'];?>€</h3>
                     <button class="agregar-carrito" 
@@ -164,35 +248,33 @@ if (isset($_SESSION["id"])) {
             </div>
         
         </div><?php }} else{
-            echo "Zapatillas no encontradas";
+            echo "Camisetas no encontradas";
         }
         ?>
         
-    </section>
-    
-    <h2 class="tipoProducto">Zapatillas de Caña Baja</h2>
-    <?php
-    $sql3 = "SELECT * from mostrar_zapatillas where tipoZapa='baja'";
-    $resultSet3 = $conn->query($sql3);
-    ?>
-    <section class="productoMostrar">
+        </section>
+        <h2 class="tipoProducto">Sudaderas</h2>
         <?php
-        if($resultSet3->num_rows > 0){
-            while ($row = $resultSet3->fetch_assoc()){
+        $sql = "SELECT * from mostrar_sudaderas where generoSud='femenino'";
+        $resultSet = $conn->query($sql);
         ?>
+        <section class="productoMostrar">
+            <?php
+            if($resultSet->num_rows > 0){
+                while ($row = $resultSet->fetch_assoc()){
+            ?>
         
-        <div class="mainDiv">
-        <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
-            <h3><?php echo $row['nombreProd'];?></h3>
-            <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
-            <div class="imagenTabla">
-                <img src="<?php echo $row['imagenProd'];?>" alt="Imagen no encontrada">
-            </div>
-            <div class="infoTabla">
+            <div class="mainDiv">
+            <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
+                <h3><?php echo $row['nombreProd'];?></h3>
+                <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
+                <div class="imagenTabla">
+                    <img src="<?php echo $row['imagenProd'];?>" alt="Imagen no encontrada">
+                </div>
+                <div class="infoTabla">
                 
-                <p class="descripcion"><?php echo $row['descripcionProd'];?></p>
-                <p class="stock">Stock: <?php echo $row['stockProd'];?>   talla: <?php echo $row['tallaZapa'];?></p>
-        </a>
+                    <p class="stock">Stock: <?php echo $row['stockProd'];?>   talla: <?php echo $row['tallaSud'];?></p>
+            </a>
                 <div class="precio-boton">
                     <h3><?php echo $row['precioProd'];?>€</h3>
                     <button class="agregar-carrito" 
@@ -203,10 +285,48 @@ if (isset($_SESSION["id"])) {
             </div>
         
         </div><?php }} else{
-            echo "Zapatillas no encontradas";
+            echo "Sudaderas no encontradas";
         }
         ?>
         
+        </section>
+        <h2 class="tipoProducto">Pantalones</h2>
+        <?php
+        $sql = "SELECT * from mostrar_pantalones where generoPant='femenino'";
+        $resultSet = $conn->query($sql);
+        ?>
+        <section class="productoMostrar">
+            <?php
+            if($resultSet->num_rows > 0){
+                while ($row = $resultSet->fetch_assoc()){
+            ?>
+        
+            <div class="mainDiv">
+            <a href="producto.php?id=<?php echo $row['idProd']?>&tipo=<?php echo $row['tipoProd']?>">
+                <h3><?php echo $row['nombreProd'];?></h3>
+                <p class="marca">marca: <?php echo $row['nombreMarca'];?></p>
+                <div class="imagenTabla">
+                    <img src="<?php echo $row['imagenProd'];?>" alt="Imagen no encontrada">
+                </div>
+                <div class="infoTabla">
+                
+                    <p class="stock">Stock: <?php echo $row['stockProd'];?>   talla: <?php echo $row['tallaPant'];?></p>
+            </a>
+                <div class="precio-boton">
+                    <h3><?php echo $row['precioProd'];?>€</h3>
+                    <button class="agregar-carrito" 
+                    data-id="<?php echo $row['idProd']; ?>" 
+                    data-nombre="<?php echo $row['nombreProd']; ?>" 
+                    data-precio="<?php echo $row['precioProd']; ?>">Agregar al carrito</button>
+                </div>
+            </div>
+        
+        </div><?php }} else{
+            echo "Pantalones no encontrados";
+        }
+        ?>
+        
+        </section>
     </section>
 
     

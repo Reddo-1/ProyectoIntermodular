@@ -130,7 +130,7 @@ else if($tipoProd == 'ejes'){
 
             <div class="oculto" id="tabla">
                 <h2>
-                    <font color="<?php echo $producto['colorTabla']?>"> Color de tabla --> <?php echo $producto['colorTabla']?></font>
+                    <font color="<?php echo $producto['colorTabla'];?>"> Color de tabla --> <?php echo $producto['colorTabla']?></font>
                 </h2>
                 <h2>Tamaño --> <?php echo $producto['tamañoTabla']; ?></h2>
             </div>
@@ -139,7 +139,36 @@ else if($tipoProd == 'ejes'){
             </div>
             <div class="oculto" id="zapatilla">
                 <h2>Tipo --> Caña <?php echo $producto['tipoZapa']; ?></h2>
+                <h2>
+                    <font color="<?php echo $producto['colorZapa'];?>"> Color de zapatilla --> <?php echo $producto['colorZapa']?></font>
+                </h2>
                 <h2>Talla --> <?php echo $producto['tallaZapa']; ?></h2>
+            </div>
+            <div class="oculto" id="camiseta">
+                <h2>Genero -->  <?php echo $producto['generoCami']; ?></h2>
+                <h2>
+                    <font color="<?php echo $producto['colorCami'];?>"> Color de camiseta --> <?php echo $producto['colorCami']?></font>
+                </h2>
+                <h2>Talla --> <?php echo $producto['tallaCami']; ?></h2>
+            </div>
+            <div class="oculto" id="sudadera">
+                <h2>Genero -->  <?php echo $producto['generoSud']; ?></h2>
+                <h2>
+                    <font color="<?php echo $producto['colorSud'];?>"> Color de sudadera --> <?php echo $producto['colorSud']?></font>
+                </h2>
+                <h2>Talla --> <?php echo $producto['tallaSud']; ?></h2>
+                <h2>Tiene capucha? --> <?= $producto['capuchaSud'] ? 'SI' : 'NO'; ?></h2>
+                <h2>Tiene cremallera? --> <?= $producto['cremalleraSud'] ? 'SI' : 'NO'; ?></h2>
+
+            </div>
+            <div class="oculto" id="pantalon">
+                <h2>Genero -->  <?php echo $producto['generoPant']; ?></h2>
+                <h2>Tipo --> <?php echo $producto['tipoPant']; ?></h2>
+                <h2>
+                    <font color="<?php echo $producto['colorPant']?>"> Color de pantalon --> <?php echo $producto['colorPant']?></font>
+                </h2>
+                <h2>Talla --> <?php echo $producto['tallaPant']; ?></h2>
+                <h2>Son cortos? --> <?= $producto['cortosPant'] ? 'SI' : 'NO'; ?></h2>
             </div>
 
             <div>
