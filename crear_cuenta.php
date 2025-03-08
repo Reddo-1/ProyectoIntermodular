@@ -1,7 +1,8 @@
 <?php
 include "conexion.php";
+
 session_start();
-$destinoLogin = "login.php";
+$destinoLogin = "login.php"; // Por defecto, redirige a login
 
 $isLoggedIn = isset($_SESSION["id"]) ? 'true' : 'false';
 
@@ -12,42 +13,66 @@ if (isset($_SESSION["id"])) {
         $destinoLogin = "index.php";
     }
 }
-$idProd = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$tipoProd = isset($_GET['tipo']) ? $_GET['tipo'] : '';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    try{
+        $conn->begin_transaction();
+                // Capturar datos del usuario
+                $nombre = $conn->real_escape_string($_POST["nombre"]);
+                $apellidos = $conn->real_escape_string($_POST["apellidos"]);
+                $puntos = 500;
+                $email = $conn->real_escape_string($_POST["email"]);
+                $numTelefono = isset($_POST["n_telefono"]) ? intval($_POST["n_telefono"]) : 0;
+                $admin = 0;
+                $direccion = $conn->real_escape_string($_POST["direccion"]);
+                $metodoPago = isset($_POST["tipoPago"]) ? intval($_POST["tipoPago"]) : 0;
+                $contrasenya = $conn->real_escape_string($_POST["contrasenya"]);
 
-    $sql = "SELECT * FROM mostrar_$tipoProd WHERE idProd = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $idProd);
-    $stmt->execute();
-    $resultSet = $stmt->get_result();
-    $producto = $resultSet->fetch_assoc();
+                // Insertar usuario en la base de datos
+                $stmt = $conn->prepare("INSERT INTO clientes (es_admin, puntos, email, n_telefono, nombre, apellidos, direccion, contrasenya) 
+                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("iisissss", $admin, $puntos, $email, $numTelefono, $nombre, $apellidos, $direccion, $contrasenya);
+                $stmt->execute();
+
+                $idCliente = $conn->insert_id;
+
+                $stmt = $conn->prepare("INSERT INTO pago_clientes (id_persona,id_metodo) 
+                                        VALUES (?, ?)");
+                $stmt->bind_param("ii",$idCliente,$metodoPago);
+                $stmt->execute();
+
+                $conn->commit();
+                header("Location: login.php");
+                exit();
+        }catch (Exception $e) {
+            $conn->rollback();
+        }
+    }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <script>
         var isLoggedIn = <?php echo $isLoggedIn; ?>;
     </script>
     <script src="scripts.js"></script>
-    <input type="hidden" value="<?php echo $tipoProd; ?>" id="tipoProd">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta</title>
     <link rel="stylesheet" href="PI.css">
-    <title>Producto</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
+<header>
         <div class="titulo">
             <div class="logo">
                 <h1>XanaX skateboards</h1>
             </div>
 
             <div class="iconos">
-               <a href="<?= $destinoLogin ?>">
+               <a href="login.php">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                     <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
                   </svg>
@@ -72,7 +97,6 @@ $tipoProd = isset($_GET['tipo']) ? $_GET['tipo'] : '';
 
                     </svg>
                 </a>
-                
             </div>
 
         </div>
@@ -83,88 +107,84 @@ $tipoProd = isset($_GET['tipo']) ? $_GET['tipo'] : '';
             <a href="skateboards.php">SKATEBOARDS</a>
             <a href="zapatillas.php">ZAPATILLAS</a>
             <a href="ropa.php">ROPA</a>
+            
         </nav>
 
-        <div class="search-container">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="16" fill="currentColor" class="iconoSearch" viewBox="0 0 16 16">
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-            </svg>
-            <input type="text" class="search-input" id="search"  placeholder="Buscar...">
-        </div>
-        <div id="search-results" class="resultados-busqueda"></div>
-
-    </header>
+</header>
     <div id="carrito-flotante" class="carrito-flotante oculto">
         <h2>Carrito de Compras</h2>
         <div id="carrito-items"></div>
         <button id="cerrar-carrito">Cerrar</button>
-        <button id="comprar" onclick="location.href='cart.php?id=<?php echo $isLoggedIn === 'true' ? $_SESSION['id'] : '0'; ?>'">Ir a Caja</button>
+        <button id="comprar" onclick="location.href='cart.php?id=<?php echo $_SESSION['id'] ?>'">Ir a Caja</button>
         <button id="vaciar-carrito">Vaciar Carrito</button>
     </div>
-    <main class="producto-detalle">
-        <div class="imagen-container">
-            <img src="<?php echo $producto['imagenProd']; ?>" alt="<?php echo $producto['nombreProd']; ?>">
-        </div>
-        <div class="info-container">
-            <h1><?php echo $producto['nombreProd']; ?></h1>
-            <h2>Marca --> <?php echo $producto['nombreMarca']; ?></h2>
-            <p class="precio">Precio : <?php echo $producto['precioProd']; ?>€</p>
-            <hr>
-            <p class="descripcion"><?php echo $producto['descripcionProd']; ?></p>
-            <hr>
 
-            <div class="oculto" id="tabla">
-                <h2>
-                    <font color="<?php echo $producto['colorTabla'];?>"> Color de tabla --> <?php echo $producto['colorTabla']?></font>
-                </h2>
-                <h2>Tamaño --> <?php echo $producto['tamañoTabla']; ?></h2>
-            </div>
-            <div class="oculto" id="eje">
-                <h2>Tamaño --> <?php echo $producto['tamañoEje']; ?></h2>
-            </div>
-            <div class="oculto" id="zapatilla">
-                <h2>Tipo --> Caña <?php echo $producto['tipoZapa']; ?></h2>
-                <h2>
-                    <font color="<?php echo $producto['colorZapa'];?>"> Color de zapatilla --> <?php echo $producto['colorZapa']?></font>
-                </h2>
-                <h2>Talla --> <?php echo $producto['tallaZapa']; ?></h2>
-            </div>
-            <div class="oculto" id="camiseta">
-                <h2>Genero -->  <?php echo $producto['generoCami']; ?></h2>
-                <h2>
-                    <font color="<?php echo $producto['colorCami'];?>"> Color de camiseta --> <?php echo $producto['colorCami']?></font>
-                </h2>
-                <h2>Talla --> <?php echo $producto['tallaCami']; ?></h2>
-            </div>
-            <div class="oculto" id="sudadera">
-                <h2>Genero -->  <?php echo $producto['generoSud']; ?></h2>
-                <h2>
-                    <font color="<?php echo $producto['colorSud'];?>"> Color de sudadera --> <?php echo $producto['colorSud']?></font>
-                </h2>
-                <h2>Talla --> <?php echo $producto['tallaSud']; ?></h2>
-                <h2>Tiene capucha? --> <?= $producto['capuchaSud'] ? 'SI' : 'NO'; ?></h2>
-                <h2>Tiene cremallera? --> <?= $producto['cremalleraSud'] ? 'SI' : 'NO'; ?></h2>
-
-            </div>
-            <div class="oculto" id="pantalon">
-                <h2>Genero -->  <?php echo $producto['generoPant']; ?></h2>
-                <h2>Tipo --> <?php echo $producto['tipoPant']; ?></h2>
-                <h2>
-                    <font color="<?php echo $producto['colorPant']?>"> Color de pantalon --> <?php echo $producto['colorPant']?></font>
-                </h2>
-                <h2>Talla --> <?php echo $producto['tallaPant']; ?></h2>
-                <h2>Son cortos? --> <?= $producto['cortosPant'] ? 'SI' : 'NO'; ?></h2>
+<section class="insertarProductos">
+    <div class="mainDivIns">
+        <h2>🔹 CREAR CUENTA 🔹</h2>
+        
+        <form method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="tipo_formulario" value="usuario">
+            <div class="campo">
+                <label for="nombre">Nombre:</label>
+                <br>
+                <input type="text" id="nombre" name="nombre" placeholder="Escriba el nombre aqui" required>
             </div>
 
-            <div>
-                <h3>Stock Disponible = <?php echo $producto['stockProd']; ?></h3>
-                <button class="agregar-carrito" id="btn-carrito"
-                    data-id="<?php echo $producto['idProd']; ?>" 
-                    data-nombre="<?php echo $producto['nombreProd']; ?>" 
-                    data-precio="<?php echo $producto['precioProd']; ?>">Agregar al carrito</button>
-            </div> 
-        </div>
-    </main>
+            <div class="campo">
+                <label for="apellidos">Apellidos:</label>
+                <br>
+                <input type="text" id="apellidos" name="apellidos" placeholder="Escriba los apellidos" required>
+            </div>
+
+            <div class="campo">
+                <label for="direccion">Direccion:</label>
+                <br>
+                <input type="text" id="direccion" name="direccion" placeholder="Escriba su direccion" required>
+            </div>
+
+            <div class="campo">
+                <label for="email">Correo Electronico:</label>
+                <br>
+                <input type="email" id="email" name="email" placeholder="Escriba su correoE aqui" required>
+            </div>
+
+            <div class="campo">
+                <label for="n_telefono">Indique el numero de telefono con prefijo (+34):</label>
+                <br>
+                <input type="number" id="n_telefono" name="n_telefono" placeholder="ej: 620202454" required>
+            </div>
+
+            <div class="campo">
+                <label for="tipoPago">Metodo de pago:</label>
+                <br>
+                <select name="tipoPago" id="tipoPago" required>
+                    <option value="default">Selecciona un Metodo de pago</option>
+                        <?php
+                        $sql2 = "SELECT id_metodo, tipo FROM metodo_de_pago";
+                        $result = $conn->query($sql2);
+
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                            echo '<option value="' . $row["id_metodo"] . '">' . htmlspecialchars($row["tipo"]) . '</option>';
+                            }
+                        }
+                        ?>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="contrasenya">Escriba aqui su contraseña <br>(Recomendamos mayusculas, minusculas, numeros y caracteres):</label>
+                <br>
+                <input type="password" id="contrasenya" name="contrasenya" placeholder="" required>
+            </div>
+            
+            <button type="submit">🚀 Registrar</button>
+        </form>
+        
+    </div>
+</section>
+
 </body>
 </html>
 <?php

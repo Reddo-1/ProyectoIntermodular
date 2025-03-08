@@ -72,8 +72,7 @@ if (isset($_SESSION["id"])) {
 
             <a href="skateboards.php">SKATEBOARDS</a>
             <a href="zapatillas.php">ZAPATILLAS</a>
-            <a href="ropa">ROPA</a>
-            <a href="accesorios">ACCESORIOS</a>
+            <a href="ropa.php">ROPA</a>
         </nav>
 
         <div class="search-container">
@@ -89,7 +88,7 @@ if (isset($_SESSION["id"])) {
         <h2>Carrito de Compras</h2>
         <div id="carrito-items"></div>
         <button id="cerrar-carrito">Cerrar</button>
-        <button id="comprar" onclick="location.href='cart.php'">Ir a Caja</button>
+        <button id="comprar" onclick="location.href='cart.php?id=<?php echo $isLoggedIn === 'true' ? $_SESSION['id'] : '0'; ?>'">Ir a Caja</button>
         <button id="vaciar-carrito">Vaciar Carrito</button>
     </div>
     <section class="video">
@@ -106,18 +105,22 @@ if (isset($_SESSION["id"])) {
     <section class="acercaDe">
         <h2>Acerca De XanaX skateboards</h2>
         <p>
-            Somos una pequeña empresa creada por y para skaters , con esto queremos decir que además de daros a conocer
-            nuestros diseños originales para tablas y demás queremos daros otras alternativas para que la marca no sea como
-            cualquier otra generica que conozcas.
+        Somos una pequeña empresa creada por y para skaters. Nuestro objetivo es ofrecerte diseños originales para tablas y mucho más, 
+        pero también ir más allá de lo típico y brindarte algo diferente.
         </p>
         <p>
-            Nuestro objetivo es dar a conocer a todos aquellos skaters que aun teniendo el talento y la habilidad para ser 
-            patrocinados estan olvidados pero , os preguntareis como conseguiremos eso verdad? Pues muy sencillo crearemos eventos
-            con entrada totalmente gratuita con opción a participar en competiciones o retos donde no solo obtendrás visibilidad a 
-            traves de nuestras redes pero te nutrirás alrededor de cientos de skaters que compartan los mismos entretenimientos y 
-            ambiciones que tu! 
+        El cómico nombre de nuestra marca surgió durante una charla con amigos, 
+        cuando encontramos un palíndromo gracioso que nos hizo reír y, a la vez,
+        nos pareció perfecto para representar nuestro estilo auténtico y relajado.
         </p>
-        <h2>A que esperas!</h2>
+        <p>
+        Queremos apoyar a aquellos skaters con talento y habilidad que,
+         a pesar de merecerlo, aún no han tenido la oportunidad de ser patrocinados.
+         ¿Y cómo lo haremos? ¡Muy sencillo! Organizaremos eventos totalmente gratuitos,
+         donde podrás participar en competiciones y retos. Además de ganar visibilidad a través de nuestras redes sociales,
+         tendrás la oportunidad de rodearte de cientos de skaters que comparten tus mismas pasiones y ambiciones. 
+        </p>
+        <h2>¿Qué esperas para unirte a la familia XanaX? ¡Te esperamos en el próximo evento! 🛹🔥</h2>
     </section>
 
     

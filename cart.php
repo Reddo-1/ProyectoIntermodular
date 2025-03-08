@@ -3,7 +3,8 @@ include "conexion.php";
 session_start();
 $destinoLogin = "login.php"; // Por defecto, redirige a login
 
-$isLoggedIn = isset($_SESSION["id"]) ? 'true' : 'false';
+$idParaCarrito = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$isLoggedIn = isset($_SESSION["id"]);
 
 if (isset($_SESSION["id"])) {
     if ($_SESSION["es_admin"] == 1) {
@@ -18,7 +19,7 @@ if (isset($_SESSION["id"])) {
 <html lang="en">
 <head>
     <script>
-        var isLoggedIn = <?php echo $isLoggedIn; ?>;
+        var isLoggedIn = <?php echo json_encode($isLoggedIn); ?>;
     </script>
     <script src="scripts.js"></script>
     
@@ -72,8 +73,7 @@ if (isset($_SESSION["id"])) {
             <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
             <a href="zapatillas.php">ZAPATILLAS</a>
-            <a href="ropa">ROPA</a>
-            <a href="accesorios">ACCESORIOS</a>
+            <a href="ropa.php">ROPA</a>
         </nav>
 
         <div class="search-container">
@@ -92,25 +92,53 @@ if (isset($_SESSION["id"])) {
     <button id="comprar">Comprar</button>
     </div>
 
- 
-    
-
-
-
-
-
-
-
-
-
-
-
 <script>
     const carritoItems = document.getElementById("carrito-items");
     const vaciarCarritoBtn = document.getElementById("vaciar-carrito");
-    const comprarBtn = document.getElementById("comprar");
-
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    const comprarBtn = document.getElementById("comprar");
+    
+    comprarBtn.addEventListener("click", () => {
+        if (!isLoggedIn) {
+        alert("Inicia sesión para realizar una compra, por favor.");
+        window.location.href = "login.php";
+        } else {
+            // Se genera la referencia aleatoria
+            const referencia = 'REF' + Math.random().toString(36).substr(2, 9);
+            
+            // Enviar el ID de usuario y la referencia al servidor
+            const userId = <?php echo($idParaCarrito)?>;
+            if(userId==0){
+                comprarBtn.removeEventListener("click", handleClick);
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('user_id', userId);
+            formData.append('referencia', referencia);
+            
+            fetch('insertar_compra.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("¡Compra realizada con éxito!");
+                    carrito = [];
+                    actualizarCarrito();
+                } else {
+                    alert("Hubo un error al procesar la compra.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error al procesar la compra.");
+            });
+        
+    }
+});
+
 
     function actualizarCarrito() {
         carritoItems.innerHTML = ""; 
@@ -180,17 +208,6 @@ if (isset($_SESSION["id"])) {
         actualizarCarrito();
     }
 });
-
-    // Comprar productos (puedes ajustar esta parte según cómo manejes los pagos)
-    comprarBtn.addEventListener("click", () => {
-        if (carrito.length > 0) {
-            alert("¡Compra realizada con éxito!");
-            carrito = [];
-            actualizarCarrito();
-        } else {
-            alert("El carrito está vacío.");
-        }
-    });
 
     // Cargar carrito al iniciar
     actualizarCarrito();

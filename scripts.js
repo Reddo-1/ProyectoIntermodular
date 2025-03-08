@@ -6,10 +6,16 @@ function mostrarCampos() {
         const tabla = document.getElementById("tabla");
         const eje = document.getElementById("eje");
         const zapatilla = document.getElementById("zapatilla");
+        const pantalon = document.getElementById("pantalon");
+        const camiseta = document.getElementById("camiseta");
+        const sudadera = document.getElementById("sudadera");
 
         tabla.classList.add("oculto");
         eje.classList.add("oculto");
         zapatilla.classList.add("oculto");
+        pantalon.classList.add("oculto");
+        camiseta.classList.add("oculto");
+        sudadera.classList.add("oculto");
         
         if (valorSeleccionado === "tablas") {
             tabla.classList.remove("oculto");
@@ -17,6 +23,12 @@ function mostrarCampos() {
             eje.classList.remove("oculto");
         } else if (valorSeleccionado === "zapatillas") {
             zapatilla.classList.remove("oculto");
+        }else if (valorSeleccionado === "camisetas") {
+            camiseta.classList.remove("oculto");
+        }else if (valorSeleccionado === "pantalones") {
+            pantalon.classList.remove("oculto");
+        }else if (valorSeleccionado === "sudaderas") {
+            sudadera.classList.remove("oculto");
         }      
     } 
 }
@@ -71,11 +83,15 @@ function mostrarCampos() {
         // Agregar al carrito
         document.querySelectorAll(".agregar-carrito").forEach((btn) => {
             btn.addEventListener("click", () => {
+                const imagen = btn.closest(".mainDiv") 
+                    ? btn.closest(".mainDiv").querySelector("img").src 
+                    : btn.closest(".producto-detalle").querySelector("img").src;
+                    
                 const producto = {
                     id: btn.getAttribute("data-id"),
                     nombre: btn.getAttribute("data-nombre"),
                     precio: btn.getAttribute("data-precio"),
-                    imagen: btn.closest(".mainDiv").querySelector("img").src
+                    imagen: imagen
                 };
                 const productoExistente = carrito.find(item => item.id === producto.id);
     
@@ -142,88 +158,6 @@ function mostrarCampos() {
         // Cargar carrito al iniciar
         actualizarCarrito();
     });
-    
-    /*document.addEventListener("DOMContentLoaded", function () {
-        const carritoIcon = document.getElementById("carrito-icon");
-        const carritoFlotante = document.getElementById("carrito-flotante");
-        const cerrarCarrito = document.getElementById("cerrar-carrito");
-        const carritoItems = document.getElementById("carrito-items");
-        const agregarCarritoBtns = document.querySelectorAll(".agregar-carrito");
-        const btnVaciarCarrito = document.getElementById("vaciar-carrito");
-        const btnComprar = document.getElementById("comprar");
-    
-        let carrito = [];
-    
-        if (carritoIcon && carritoFlotante && cerrarCarrito && carritoItems) {
-            carritoIcon.addEventListener("click", function (event) {
-                event.preventDefault();
-                carritoFlotante.classList.remove("oculto");
-                carritoFlotante.style.right = "0";
-            });
-    
-            cerrarCarrito.addEventListener("click", function () {
-                carritoFlotante.style.right = "-400px";
-                setTimeout(() => {
-                    carritoFlotante.classList.add("oculto");
-                }, 300);
-            });
-    
-            agregarCarritoBtns.forEach(btn => {
-                btn.addEventListener("click", function () {
-                    const id = btn.getAttribute("data-id");
-                    const nombre = btn.getAttribute("data-nombre");
-                    const precio = btn.getAttribute("data-precio");
-                    const imagen = btn.closest(".mainDiv").querySelector("img").src;
-    
-                    // Verificar si el producto ya está en el carrito
-                    const productoExistente = carrito.find(item => item.id === id);
-    
-                    if (productoExistente) {
-                        
-                        productoExistente.cantidad += 1;
-                    } else {
-                        const item = {
-                            id: id,
-                            nombre: nombre,
-                            precio: precio,
-                            imagen: imagen,
-                            cantidad: 1 
-                        };
-                        if(carrito.push(item))alert("¡Producto añadido correctamente!");
-                    }
-    
-                    actualizarCarrito();
-                });
-            });
-
-            //vaciar carrito
-            btnVaciarCarrito.addEventListener("click", function () {
-                carrito = [];
-                actualizarCarrito();
-            });
-    
-            function actualizarCarrito() {
-                carritoItems.innerHTML = "";
-                carrito.forEach(item => {
-                    const itemElement = document.createElement("div");
-                    itemElement.classList.add("item-carrito"); // Clase para estilos
-                    itemElement.innerHTML = `
-                        <img src="${item.imagen}" alt="${item.nombre}" class="imagen-carrito">
-                        <div class="info-carrito">
-                            <p>${item.nombre}</p>
-                            <p>${item.precio}€</p>
-                        </div>
-                        <div class="cantidad-carrito">
-                            <span>Cantidad: ${item.cantidad}</span>
-                        </div>
-                    `;
-                    carritoItems.appendChild(itemElement);
-                });
-            }
-        } else {
-            console.error("Elementos del carrito no encontrados");
-        }
-    });*/
 
 // Ejecutar la función cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", function () {

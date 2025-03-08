@@ -401,7 +401,7 @@ button:hover {
     margin-bottom: 30px;
 }
 
-.btn-carrito {
+#btn-carrito {
     background-color: #2746f8;
     color: white;
     padding: 15px 30px;
@@ -412,11 +412,11 @@ button:hover {
     transition: background-color 0.3s;
 }
 
-.btn-carrito:hover {
+#btn-carrito:hover {
     background-color: #1a2fbf;
 }
 
-.btn-carrito:focus {
+#btn-carrito:focus {
     background-color: #F8D927 !important; 
     color: #0e0e0e !important; 
 }
@@ -525,7 +525,7 @@ button:hover {
     border:solid white;
 }
 .imagen-carrito {
-    width: 50px;
+    margin-left:10px;
     height: 50px;
     object-fit: cover;
     border-radius: 5px;
@@ -553,4 +553,12 @@ button:hover {
     color: #ff1d1d;
     background-color: white;
     border: none;
+}
+#hombre h1{
+    text-align:center;
+    font-size:xx-large;
+}
+#mujer h1{
+    text-align:center;
+    font-size:xx-large;
 }
