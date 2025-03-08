@@ -44,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <script src="scripts.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
@@ -80,11 +81,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <nav class="barraNavegacion">
-
+            
+            <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
-            <a href="zapatillas">ZAPATILLAS</a>
-            <a href="ropa">ROPA</a>
-            <a href="accesorios">ACCESORIOS</a>
+            <a href="zapatillas.php">ZAPATILLAS</a>
+            <a href="ropa.php">ROPA</a>
+            
         </nav>
 
     </header>
@@ -92,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2>Carrito de Compras</h2>
         <div id="carrito-items"></div>
         <button id="cerrar-carrito">Cerrar</button>
-        <button id="comprar" onclick="location.href='cart.php?id=<?php echo $isLoggedIn === 'true' ? $_SESSION['id'] : '0'; ?>'">
+        <button id="comprar" onclick="location.href='cart.php?id=0'">
             Ir a Caja</button>
         <button id="vaciar-carrito">Vaciar Carrito</button>
     </div>

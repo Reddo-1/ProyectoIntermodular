@@ -174,15 +174,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } catch (Exception $e) {
         $conn->rollback();
         $mensaje = "Error: " . $e->getMessage();
-    }
-
-    
+        header("Location: panelDeControl.php?mensaje=" . urlencode($mensaje));
+    }   
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <script src="scripts.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control</title>
@@ -682,7 +682,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     </section>
 
-<script src="scripts.js"></script>
+
 </body>
 </html>
 <?php

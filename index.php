@@ -107,7 +107,8 @@ if (isset($_SESSION["id"])) {
         <p>
         Somos una pequeña empresa creada por y para skaters. Nuestro objetivo es ofrecerte diseños originales para tablas y mucho más, 
         pero también ir más allá de lo típico y brindarte algo diferente.
-
+        </p>
+        <p>
         El cómico nombre de nuestra marca surgió durante una charla con amigos, 
         cuando encontramos un palíndromo gracioso que nos hizo reír y, a la vez,
         nos pareció perfecto para representar nuestro estilo auténtico y relajado.

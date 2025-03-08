@@ -39,14 +39,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         VALUES (?, ?)");
                 $stmt->bind_param("ii",$idCliente,$metodoPago);
                 $stmt->execute();
-                $mensaje = "¡Usuario registrado correctamente!";
 
                 $conn->commit();
                 header("Location: login.php");
                 exit();
         }catch (Exception $e) {
             $conn->rollback();
-            $mensaje = "Error: " . $e->getMessage();
         }
     }
 ?>
@@ -60,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control</title>
+    <title>Crear Cuenta</title>
     <link rel="stylesheet" href="PI.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

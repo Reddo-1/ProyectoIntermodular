@@ -20,7 +20,6 @@ if (isset($_SESSION["id"])) {
 <head>
     <script>
         var isLoggedIn = <?php echo json_encode($isLoggedIn); ?>;
-        var isLoggedIn2 = "<?php echo $isLoggedIn; ?>";
     </script>
     <script src="scripts.js"></script>
     
