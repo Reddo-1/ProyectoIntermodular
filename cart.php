@@ -19,6 +19,7 @@ if (isset($_SESSION["id"])) {
 <head>
     <script>
         var isLoggedIn = <?php echo $isLoggedIn; ?>;
+        var isLoggedIn2 = "<?php echo $isLoggedIn; ?>";
     </script>
     <script src="scripts.js"></script>
     
@@ -91,25 +92,27 @@ if (isset($_SESSION["id"])) {
     <button id="comprar">Comprar</button>
     </div>
 
- 
-    
-
-
-
-
-
-
-
-
-
-
-
 <script>
     const carritoItems = document.getElementById("carrito-items");
     const vaciarCarritoBtn = document.getElementById("vaciar-carrito");
-    const comprarBtn = document.getElementById("comprar");
-
     let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    const comprarBtn = document.getElementById("comprar");
+    
+    comprarBtn.addEventListener("click", () => {
+        if (isLoggedIn2 == "false") {
+        alert("Inicia sesión para realizar una compra, por favor.");
+        window.location.href = "login.php";
+        } else {
+            if (carrito.length > 0) {
+                alert("¡Compra realizada con éxito!");
+                carrito = [];
+                actualizarCarrito();
+            } else {
+                alert("El carrito está vacío.");
+            }
+        }
+    });
+
 
     function actualizarCarrito() {
         carritoItems.innerHTML = ""; 
@@ -179,17 +182,6 @@ if (isset($_SESSION["id"])) {
         actualizarCarrito();
     }
 });
-
-    // Comprar productos (puedes ajustar esta parte según cómo manejes los pagos)
-    comprarBtn.addEventListener("click", () => {
-        if (carrito.length > 0) {
-            alert("¡Compra realizada con éxito!");
-            carrito = [];
-            actualizarCarrito();
-        } else {
-            alert("El carrito está vacío.");
-        }
-    });
 
     // Cargar carrito al iniciar
     actualizarCarrito();
