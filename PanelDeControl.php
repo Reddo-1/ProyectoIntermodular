@@ -237,12 +237,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
         </nav>
 
-    </header>
+</header>
     <div id="carrito-flotante" class="carrito-flotante oculto">
         <h2>Carrito de Compras</h2>
         <div id="carrito-items"></div>
         <button id="cerrar-carrito">Cerrar</button>
-        <button id="comprar" onclick="location.href='cart.php'">Ir a Caja</button>
+        <button id="comprar" onclick="location.href='cart.php?id=<?php echo $_SESSION['id'] ?>'">Ir a Caja</button>
         <button id="vaciar-carrito">Vaciar Carrito</button>
     </div>
 

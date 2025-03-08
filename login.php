@@ -113,6 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <br>
                     <input type="password" id="contrasenya" name="contrasenya" placeholder="Ingrese su contraseña" required>
                 </div>
+                <a href="crear_cuenta.php">Registrate!</a>
                 
                 <button type="submit">🚀 Iniciar Sesión</button>
             </form>
