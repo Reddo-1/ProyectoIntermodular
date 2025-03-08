@@ -93,7 +93,8 @@ if (isset($_SESSION["id"])) {
         <h2>Carrito de Compras</h2>
         <div id="carrito-items"></div>
         <button id="cerrar-carrito">Cerrar</button>
-        <button id="comprar"onclick="location.href='cart.php'">Ir a Caja</button>
+        <button id="comprar" onclick="location.href='cart.php?id=<?php echo $isLoggedIn === 'true' ? $_SESSION['id'] : '0'; ?>'">
+            Ir a Caja</button>
         <button id="vaciar-carrito">Vaciar Carrito</button>
     </div>
 
@@ -198,8 +199,7 @@ if (isset($_SESSION["id"])) {
             </a>
                 <div class="precio-boton">
                     <h3><?php echo $row['precioProd'];?>€</h3>
-                    <button class="agregar-carrito" 
-                    data-id="<?php echo $row['idProd']; ?>" 
+                    <button class="agregar-carrito" data-id="<?php echo $row['idProd']; ?>" 
                     data-nombre="<?php echo $row['nombreProd']; ?>" 
                     data-precio="<?php echo $row['precioProd']; ?>">Agregar al carrito</button>
                 </div>

@@ -83,11 +83,15 @@ function mostrarCampos() {
         // Agregar al carrito
         document.querySelectorAll(".agregar-carrito").forEach((btn) => {
             btn.addEventListener("click", () => {
+                const imagen = btn.closest(".mainDiv") 
+                    ? btn.closest(".mainDiv").querySelector("img").src 
+                    : btn.closest(".producto-detalle").querySelector("img").src;
+                    
                 const producto = {
                     id: btn.getAttribute("data-id"),
                     nombre: btn.getAttribute("data-nombre"),
                     precio: btn.getAttribute("data-precio"),
-                    imagen: btn.closest(".mainDiv").querySelector("img").src
+                    imagen: imagen
                 };
                 const productoExistente = carrito.find(item => item.id === producto.id);
     

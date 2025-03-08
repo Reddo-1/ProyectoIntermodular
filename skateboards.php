@@ -88,7 +88,8 @@ if (isset($_SESSION["id"])) {
         <h2>Carrito de Compras</h2>
         <div id="carrito-items"></div>
         <button id="cerrar-carrito">Cerrar</button>
-        <button id="comprar"onclick="location.href='cart.php'">Ir a Caja</button>
+        <button id="comprar" onclick="location.href='cart.php?id=<?php echo $isLoggedIn === 'true' ? $_SESSION['id'] : '0'; ?>'">
+            Ir a Caja</button>
         <button id="vaciar-carrito">Vaciar Carrito</button>
     </div>
 
