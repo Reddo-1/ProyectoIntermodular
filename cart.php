@@ -3,7 +3,8 @@ include "conexion.php";
 session_start();
 $destinoLogin = "login.php"; // Por defecto, redirige a login
 
-$isLoggedIn = isset($_SESSION["id"]) ? 'true' : 'false';
+$idParaCarrito = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$isLoggedIn = isset($_SESSION["id"]);
 
 if (isset($_SESSION["id"])) {
     if ($_SESSION["es_admin"] == 1) {
@@ -18,7 +19,7 @@ if (isset($_SESSION["id"])) {
 <html lang="en">
 <head>
     <script>
-        var isLoggedIn = <?php echo $isLoggedIn; ?>;
+        var isLoggedIn = <?php echo json_encode($isLoggedIn); ?>;
         var isLoggedIn2 = "<?php echo $isLoggedIn; ?>";
     </script>
     <script src="scripts.js"></script>
@@ -99,19 +100,45 @@ if (isset($_SESSION["id"])) {
     const comprarBtn = document.getElementById("comprar");
     
     comprarBtn.addEventListener("click", () => {
-        if (isLoggedIn2 == "false") {
+        if (!isLoggedIn) {
         alert("Inicia sesión para realizar una compra, por favor.");
         window.location.href = "login.php";
         } else {
-            if (carrito.length > 0) {
-                alert("¡Compra realizada con éxito!");
-                carrito = [];
-                actualizarCarrito();
-            } else {
-                alert("El carrito está vacío.");
+            // Se genera la referencia aleatoria
+            const referencia = 'REF' + Math.random().toString(36).substr(2, 9);
+            
+            // Enviar el ID de usuario y la referencia al servidor
+            const userId = <?php echo($idParaCarrito)?>;
+            if(userId==0){
+                comprarBtn.removeEventListener("click", handleClick);
+                return;
             }
-        }
-    });
+            
+            const formData = new FormData();
+            formData.append('user_id', userId);
+            formData.append('referencia', referencia);
+            
+            fetch('insertar_compra.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("¡Compra realizada con éxito!");
+                    carrito = [];
+                    actualizarCarrito();
+                } else {
+                    alert("Hubo un error al procesar la compra.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Error al procesar la compra.");
+            });
+        
+    }
+});
 
 
     function actualizarCarrito() {
