@@ -151,7 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt_unico->execute();
                 }
                 else if ($tipoProd == "pantalones") {
-                    $tallaPant = isset($_POST["tallaPant"]) ? intval($_POST["tallaPant"]) : 0.0;
+                    $tallaPant = $conn->real_escape_string($_POST["tallaPant"]);
                     $tipoPant = $conn->real_escape_string($_POST["tipoPant"]);
                     $colorPant = $conn->real_escape_string($_POST["colorPant"]);
                     $generoPant = $conn->real_escape_string($_POST["generoPant"]);
@@ -233,8 +233,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
             <a href="zapatillas.php">ZAPATILLAS</a>
-            <a href="ropa">ROPA</a>
-            <a href="accesorios">ACCESORIOS</a>
+            <a href="ropa.php">ROPA</a>
+            
         </nav>
 
     </header>

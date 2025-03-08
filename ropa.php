@@ -25,7 +25,7 @@ if (isset($_SESSION["id"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="PI.css">
-    <title>Skateboards</title>
+    <title>Ropa</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
@@ -71,7 +71,7 @@ if (isset($_SESSION["id"])) {
 
             <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
-            <a href="ropa">ROPA</a>
+            <a href="zapatillas.php">ZAPATILLAS</a>
             
         </nav>
         <nav class="barraNavegacion">

@@ -15,32 +15,12 @@ if (isset($_SESSION["id"])) {
 $idProd = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $tipoProd = isset($_GET['tipo']) ? $_GET['tipo'] : '';
 
-if ($tipoProd == 'tablas') {
-    $sql = "SELECT * FROM mostrar_tablas WHERE idProd = ?";
+    $sql = "SELECT * FROM mostrar_$tipoProd WHERE idProd = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $idProd);
     $stmt->execute();
     $resultSet = $stmt->get_result();
     $producto = $resultSet->fetch_assoc();
-}
-else if($tipoProd == 'zapatillas'){
-    $sql = "SELECT * FROM mostrar_zapatillas WHERE idProd = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $idProd);
-    $stmt->execute();
-    $resultSet = $stmt->get_result();
-    $producto = $resultSet->fetch_assoc();
-}
-else if($tipoProd == 'ejes'){
-    $sql = "SELECT * FROM mostrar_ejes WHERE idProd = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $idProd);
-    $stmt->execute();
-    $resultSet = $stmt->get_result();
-    $producto = $resultSet->fetch_assoc();
-}
-    
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,8 +82,7 @@ else if($tipoProd == 'ejes'){
             <a href="index.php">HOME</a>
             <a href="skateboards.php">SKATEBOARDS</a>
             <a href="zapatillas.php">ZAPATILLAS</a>
-            <a href="ropa">ROPA</a>
-            <a href="accesorios">ACCESORIOS</a>
+            <a href="ropa.php">ROPA</a>
         </nav>
 
         <div class="search-container">

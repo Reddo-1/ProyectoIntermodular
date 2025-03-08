@@ -13,6 +13,9 @@ function mostrarCampos() {
         tabla.classList.add("oculto");
         eje.classList.add("oculto");
         zapatilla.classList.add("oculto");
+        pantalon.classList.add("oculto");
+        camiseta.classList.add("oculto");
+        sudadera.classList.add("oculto");
         
         if (valorSeleccionado === "tablas") {
             tabla.classList.remove("oculto");
