@@ -102,6 +102,43 @@ if (isset($_SESSION["id"])) {
 
     </section>
     
+    <h2 class="tipoProducto">¡NOVEDADES!</h2>
+    <?php
+    $sql = "SELECT * FROM `productos` WHERE es_novedad = 1 order by Rand() limit 5";
+    $resultSet = $conn->query($sql);
+    ?>
+    <section class="productoMostrar">
+        <?php
+        if($resultSet->num_rows > 0){
+            while ($row = $resultSet->fetch_assoc()){
+        ?>
+        
+        <div class="mainDiv">
+        <a href="producto.php?id=<?php echo $row['id_producto']?>&tipo=<?php echo $row['tipo_producto']?>">
+            <h3><?php echo $row['nombre'];?></h3>
+            <div class="imagenTabla">
+                <img src="<?php echo $row['imagen'];?>" alt="Imagen no encontrada">
+            </div>
+            <div class="infoTabla">
+                
+                <p class="stock">Stock: <?php echo $row['stock_disponible'];?>   tipo: <?php echo $row['tipo_producto'];?></p>
+        </a>
+                <div class="precio-boton">
+                    <h3><?php echo $row['precio'];?>€</h3>
+                    <button class="agregar-carrito" 
+                    data-id="<?php echo $row['id_producto']; ?>" 
+                    data-nombre="<?php echo $row['nombre']; ?>" 
+                    data-precio="<?php echo $row['precio']; ?>">Agregar al carrito</button>
+                </div>
+            </div>
+        
+        </div><?php }} else{
+            echo "Tablas no encontradas";
+        }
+        ?>
+        
+    </section>
+
     <section class="acercaDe">
         <h2>Acerca De XanaX skateboards</h2>
         <p>
