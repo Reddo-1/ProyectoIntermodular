@@ -678,10 +678,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
 
         
+        </div>
+
+    </section>
+    <hr>
+    <hr>
+    <section class="insertarProductos">
+    <div class="mainDivIns" id="insertarProductos">
+        <h2>🔹 Listado de Clientes 🔹</h2>
+        
+        <table>
+    <tr>
+        <th>ID Cliente</th>
+        <th>Es Admin?</th>
+        <th>Puntos</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>Nombre</th>
+        <th>Apellidos</th>
+        <th>Dirección</th>
+        <th>Contraseña</th>
+    </tr>
+
+    <?php
+    $sql = "SELECT id_cliente, es_admin, puntos, email, n_telefono, nombre, apellidos, direccion, contrasenya FROM clientes";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            echo "<tr>
+                    <td>".$row["id_cliente"]."</td>
+                    <td>".($row["es_admin"] ? 'Sí' : 'No')."</td>
+                    <td>".$row["puntos"]."</td>
+                    <td>".$row["email"]."</td>
+                    <td>".$row["n_telefono"]."</td>
+                    <td>".$row["nombre"]."</td>
+                    <td>".$row["apellidos"]."</td>
+                    <td>".$row["direccion"]."</td>
+                    <td>".$row["contrasenya"]."</td>
+                </tr>";
+        }
+    } else {
+        echo "<tr><td colspan='9'>No hay clientes registrados</td></tr>";
+    }
+    ?>
+</table>
+
+        
     </div>
 
     </section>
-
 
 </body>
 </html>
