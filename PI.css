@@ -139,7 +139,14 @@ button:hover{
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    width: 100%; 
+    height: auto;
+}
+.imagenTabla img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px;
 }
 .mainDiv p , h3{
     margin: 5px 0; 
@@ -149,10 +156,6 @@ button:hover{
     display: flex;
     gap :10px;
     justify-content: space-between;
-}
-.imagenTabla img{
-    height: 40vh;
-
 }
 
 .mainDivIns {
