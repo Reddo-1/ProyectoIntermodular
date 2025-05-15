@@ -19,4 +19,6 @@ if (isset($_GET['query'])) {
     echo json_encode($productos);
 }
 $conn->close();
+// Cerrar la conexión a la base de datos
 ?>
+
